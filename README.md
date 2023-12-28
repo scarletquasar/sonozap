@@ -1,5 +1,5 @@
 # Sonozap
-Whatsapp Web clone monorepo (backend and frontend).
+Whatsapp Web clone monorepo (backend and frontend) for the Woovi Challenge.
 
 # Stack
 
