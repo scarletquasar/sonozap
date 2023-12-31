@@ -5,6 +5,7 @@ import { ContactsProfileHeader } from "./ContactsProfileHeader";
 import { ContactsProfileTitle } from "./ContactsProfileTitle";
 import { ContactsProfileBody } from "./ContactsProfileBody";
 import { ContactsSearch } from "./ContactsSearch";
+import { ContactsList } from "./ContactsList";
 
 const style = {
     width: '30%',
@@ -65,7 +66,7 @@ const contactsPanels = {
         <>
             <ContactsHeader style={headerStyle} />
             <ContactsSearch style={searchStyle} />
-            <Card style={contactsStyle}></Card>
+            <ContactsList style={contactsStyle} />
         </>
     ),
     'profile': (
@@ -82,12 +83,15 @@ const contactsPanels = {
 }
 
 interface ContactsState {
-    contextValue: { currentPanel: keyof typeof contactsPanels },
+    contextValue: { 
+        currentPanel: keyof typeof contactsPanels,
+        currentContact: string | null
+    },
     setContextValue: React.Dispatch<React.SetStateAction<ContactsState['contextValue'] | null>>
 }
 
 const ContactsContext = createContext<ContactsState>({
-    contextValue: { currentPanel: 'default' },
+    contextValue: { currentPanel: 'default', currentContact: '' },
     setContextValue: () => {}
 });
 

@@ -1,3 +1,6 @@
+import { useContext } from "react";
+import { ProfileContext } from "../profiling/ProfileContext";
+
 const photoStyle = {
     borderRadius: '100%',
     width: '12em',
@@ -59,6 +62,8 @@ const bioTextStyle = {
 };
 
 function ContactsProfileBody(props: { style: React.CSSProperties }) {
+    const profileContext = useContext(ProfileContext);
+
     return (
         <div style={props.style}>
             <div>
@@ -70,7 +75,9 @@ function ContactsProfileBody(props: { style: React.CSSProperties }) {
                 </div>
                 <br />
                 <div style={nameContentStyle}>
-                    <div style={nameContentLeft}>%username%</div>
+                    <div style={nameContentLeft}>
+                        {profileContext.contextValue.username}
+                    </div>
                     <div style={nameContentRight}>
                         <button style={nameContentEditButtonStyle}>
                             <span className="material-symbols-outlined">
@@ -90,7 +97,9 @@ function ContactsProfileBody(props: { style: React.CSSProperties }) {
                 </div>
                 <br />
                 <div style={bioContentStyle}>
-                    <div style={bioContentLeft}>%bio%</div>
+                    <div style={bioContentLeft}>
+                        {profileContext.contextValue.bio}
+                    </div>
                     <div style={bioContentRight}>
                         <button style={nameContentEditButtonStyle}>
                             <span className="material-symbols-outlined">
