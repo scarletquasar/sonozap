@@ -10,7 +10,8 @@ const nameBlockStyle = {
 
 const nameTextStyle = {
     color: '#008069',
-    fontSize: '0.9em'
+    fontSize: '0.9em',
+    marginTop: '8%'
 };
 
 const nameContentStyle = {
@@ -38,6 +39,25 @@ const nameDisclaimerStyle = {
     color: 'rgba(255,255,255, 0.5)'
 }
 
+const bioContentStyle = {
+    display: 'flex'
+}
+
+const bioContentLeft = {
+    width: '50%'
+};
+
+const bioContentRight = {
+    width: '50%',
+    display: 'flex',
+    flexDirection: 'row-reverse'
+} as React.CSSProperties;
+
+const bioTextStyle = {
+    color: '#008069',
+    fontSize: '0.9em'
+};
+
 function ContactsProfileBody(props: { style: React.CSSProperties }) {
     return (
         <div style={props.style}>
@@ -63,6 +83,21 @@ function ContactsProfileBody(props: { style: React.CSSProperties }) {
                 <div style={nameDisclaimerStyle}>
                     This name is not your username neither your PIN. This name will
                     be shown to your Sonozap contacts.
+                </div>
+                <br />
+                <div style={bioTextStyle}>
+                    Bio
+                </div>
+                <br />
+                <div style={bioContentStyle}>
+                    <div style={bioContentLeft}>%bio%</div>
+                    <div style={bioContentRight}>
+                        <button style={nameContentEditButtonStyle}>
+                            <span className="material-symbols-outlined">
+                                edit
+                            </span>
+                        </button>
+                    </div>
                 </div>
             </div>
         </div>
