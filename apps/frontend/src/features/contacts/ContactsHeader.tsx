@@ -1,16 +1,12 @@
-import { Card } from "primereact/card";
 import { useContext, useState } from "react";
 import { ContactsContext } from "./ContactsPresets";
-import { Button } from 'primereact/button';
 
-const buttonStyle = {
+const profilePicStyle = {
     borderRadius: '100%',
     height: '70%',
     width: '18%',
-    background: "url('./no-photo-placeholder.jpg')",
-    backgroundSize: '100%',
-    backgroundRepeat: 'no-repeat',
-    border: 'none'
+    border: 'none',
+    cursor: 'pointer'
 } as React.CSSProperties;
 
 const leftBlockStyle = {
@@ -27,7 +23,7 @@ const rightBlockStyle = {
     display: 'flex',
     flexDirection: 'row-reverse',
     alignItems: 'center',
-    gap: '8.5%',
+    gap: '1.5%',
 } as React.CSSProperties;
 
 const headerButtonStyle = {
@@ -53,7 +49,11 @@ function ContactsHeader(props: { style: React.CSSProperties }) {
     return (
         <div style={props.style}>
             <div style={leftBlockStyle}>
-                <Button style={buttonStyle} onClick={() => context.setContextValue({
+                <img 
+                    role="button"
+                    style={profilePicStyle} 
+                    src="/no-photo-placeholder.jpg" 
+                    onClick={() => context.setContextValue({
                     currentPanel: 'profile'
                 })} />
             </div>

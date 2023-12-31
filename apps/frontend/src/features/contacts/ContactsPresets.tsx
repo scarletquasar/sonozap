@@ -4,6 +4,7 @@ import { ContactsHeader } from "./ContactsHeader";
 import { ContactsProfileHeader } from "./ContactsProfileHeader";
 import { ContactsProfileTitle } from "./ContactsProfileTitle";
 import { ContactsProfileBody } from "./ContactsProfileBody";
+import { ContactsSearch } from "./ContactsSearch";
 
 const style = {
     width: '30%',
@@ -22,9 +23,12 @@ const headerStyle = {
 } as React.CSSProperties;
 
 const searchStyle = {
-    height: '5%',
+    height: '5.5%',
     borderRadius: 0,
-    background: '#111B21'
+    background: '#111B21',
+    display: 'flex',
+    paddingBlock: '1.5%',
+    paddingInline: '2.5%'
 }
 
 const contactsStyle = {
@@ -54,13 +58,13 @@ const profileBodyStyle = {
     alignItems: 'center',
     justifyContent: 'center',
     flexDirection: 'column'
-}
+} as React.CSSProperties;
 
 const contactsPanels = {
     'default': (
         <>
             <ContactsHeader style={headerStyle} />
-            <Card style={searchStyle}></Card>
+            <ContactsSearch style={searchStyle} />
             <Card style={contactsStyle}></Card>
         </>
     ),
