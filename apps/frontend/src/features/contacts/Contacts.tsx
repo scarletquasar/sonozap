@@ -1,37 +1,19 @@
-import { Card } from "primereact/card";
 import { createBrowserRouter } from "react-router-dom";
-
-const style = {
-    width: '30%',
-    borderRight: '0.4px solid rgba(255,255,255, 0.2)',
-    margin: '0'
-}
-
-const headerStyle = {
-    height: '6.3%',
-    borderRadius: 0
-}
-
-const searchStyle = {
-    height: '5%',
-    borderRadius: 0,
-    background: '#111B21'
-}
-
-const contactsStyle = {
-    height: '88.7%',
-    background: '#111B21',
-    overflowY: 'auto'
-} as React.CSSProperties;
+import { ContactsContext, ContactsState, contactsPanels, style } from "./ContactsPresets";
+import { useState } from "react";
 
 const Contacts = (props: { router: ReturnType<typeof createBrowserRouter>}) => {
     console.log(props);
+
+    const [contextValue, setContextValue] = useState<ContactsState['contextValue']>({ currentPanel: 'default' });
+
     return (
-        <div style={style}>
-            <Card style={headerStyle}></Card>
-            <Card style={searchStyle}></Card>
-            <Card style={contactsStyle}></Card>
-        </div>
+        <ContactsContext.Provider value={{ contextValue, setContextValue } as ContactsState}>
+            <div style={style}>
+                {contactsPanels[contextValue.currentPanel]}
+            </div>
+        </ContactsContext.Provider>
+
     )
 }
 
