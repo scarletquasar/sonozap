@@ -2,8 +2,7 @@ import { Card } from "primereact/card";
 import { createBrowserRouter } from "react-router-dom";
 
 const style = {
-    width: '40%',
-    maxWidth: '480px',
+    width: '30%',
     borderRight: '0.4px solid rgba(255,255,255, 0.2)',
     margin: '0'
 }
@@ -22,7 +21,7 @@ const searchStyle = {
 const contactsStyle = {
     height: '88.7%',
     background: '#111B21',
-    overflowY: 'scroll'
+    overflowY: 'auto'
 } as React.CSSProperties;
 
 const Contacts = (props: { router: ReturnType<typeof createBrowserRouter>}) => {

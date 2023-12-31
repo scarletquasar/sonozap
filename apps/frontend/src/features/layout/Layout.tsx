@@ -15,7 +15,7 @@ const style = {
     marginBlock: '5px',
     width: '83vw',
     backgroundImage: "url('./whatsapp-bg.jpg')",
-    backgroundSize: 'contain',
+    backgroundSize: '20%',
     height: '96vh',
     display: 'flex',
     padding: '0'
