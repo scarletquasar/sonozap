@@ -13,7 +13,7 @@ const router = createBrowserRouter([
 
 const style = {
     marginBlock: '5px',
-    width: '83vw',
+    width: '83.3vw',
     backgroundImage: "url('./whatsapp-bg.jpg')",
     backgroundSize: '20%',
     height: '96vh',

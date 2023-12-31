@@ -1,6 +1,7 @@
 import { Card } from "primereact/card";
 import { createContext } from "react";
 import { ContactsHeader } from "./ContactsHeader";
+import { ContactsProfile } from "./ContactsProfile";
 
 const style = {
     width: '30%',
@@ -12,8 +13,11 @@ const headerStyle = {
     height: '6.3%',
     borderRadius: 0,
     display: 'flex',
-    alignItems: 'center'
-}
+    alignItems: 'center',
+    paddingInline: '3%',
+    width: '100%',
+    background: '#202C33'
+} as React.CSSProperties;
 
 const searchStyle = {
     height: '5%',
@@ -39,7 +43,7 @@ const contactsPanels = {
             <Card style={contactsStyle}></Card>
         </>
     ),
-    'profile': <Card style={profileInfoStyle}></Card>,
+    'profile': <ContactsProfile style={profileInfoStyle} />,
     'status': <></>,
     'communities': <></>,
     'channels': <></>,

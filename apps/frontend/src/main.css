@@ -6,3 +6,8 @@ html, body {
     justify-content: center;
     align-items: center;
 }
+
+.p-card-body .p-card-content {
+    padding: 0;
+    width: inherit;
+}
