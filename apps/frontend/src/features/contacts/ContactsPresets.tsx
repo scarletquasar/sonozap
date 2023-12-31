@@ -3,6 +3,7 @@ import { createContext } from "react";
 import { ContactsHeader } from "./ContactsHeader";
 import { ContactsProfileHeader } from "./ContactsProfileHeader";
 import { ContactsProfileTitle } from "./ContactsProfileTitle";
+import { ContactsProfileBody } from "./ContactsProfileBody";
 
 const style = {
     width: '30%',
@@ -42,7 +43,18 @@ const profileHeaderStyle = {
     flexDirection: 'row',
     gap: '5%',
     paddingInline: '4%'
-};
+} as React.CSSProperties;
+
+const profileBodyStyle = {
+    height: '87.4%',
+    width: '100%',
+    background: '#111B21',
+    borderRadius: 0,
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    flexDirection: 'column'
+}
 
 const contactsPanels = {
     'default': (
@@ -56,6 +68,7 @@ const contactsPanels = {
         <>
             <ContactsProfileHeader style={profileHeaderStyle} />
             <ContactsProfileTitle style={profileHeaderStyle} />
+            <ContactsProfileBody style={profileBodyStyle} />
         </>
     ),
     'status': <></>,
