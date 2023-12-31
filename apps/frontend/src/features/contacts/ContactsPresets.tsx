@@ -1,7 +1,8 @@
 import { Card } from "primereact/card";
 import { createContext } from "react";
 import { ContactsHeader } from "./ContactsHeader";
-import { ContactsProfile } from "./ContactsProfile";
+import { ContactsProfileHeader } from "./ContactsProfileHeader";
+import { ContactsProfileTitle } from "./ContactsProfileTitle";
 
 const style = {
     width: '30%',
@@ -31,8 +32,16 @@ const contactsStyle = {
     overflowY: 'auto'
 } as React.CSSProperties;
 
-const profileInfoStyle = {
-
+const profileHeaderStyle = {
+    height: '6.3%',
+    borderRadius: 0,
+    display: 'flex',
+    width: '100%',
+    background: '#202C33',
+    alignItems: 'center',
+    flexDirection: 'row',
+    gap: '5%',
+    paddingInline: '4%'
 };
 
 const contactsPanels = {
@@ -43,7 +52,12 @@ const contactsPanels = {
             <Card style={contactsStyle}></Card>
         </>
     ),
-    'profile': <ContactsProfile style={profileInfoStyle} />,
+    'profile': (
+        <>
+            <ContactsProfileHeader style={profileHeaderStyle} />
+            <ContactsProfileTitle style={profileHeaderStyle} />
+        </>
+    ),
     'status': <></>,
     'communities': <></>,
     'channels': <></>,
