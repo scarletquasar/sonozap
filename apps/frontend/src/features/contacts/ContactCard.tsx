@@ -1,3 +1,4 @@
+import { ViewStatus } from "../messages/MessagesPresets";
 import { ProfileContextState } from "../profiling/ProfileContext"
 
 const contactCardStyle = {
@@ -29,14 +30,34 @@ const contactPhotoStyle = {
     width: '100%'
 }
 
-const ContactCard = (props: { data: ProfileContextState['contextValue']['contacts'][number] }) => {
+const contactTitleStyle = {
+    fontSize: '1.1em'
+};
+
+const lastMessageStyle = {
+    fontSize: '0.9em'
+}
+
+const ContactCard = (props: { 
+    data: ProfileContextState['contextValue']['contacts'][number],
+    lastMessageMetadata: {
+        intro: string,
+        viewStatus: ViewStatus
+    }
+}) => {
     return (
         <div style={contactCardStyle}>
             <div style={contactCardLeftStyle}>
                 <img style={contactPhotoStyle} src={props.data.photo ?? './no-photo-placeholder.jpg'} />
             </div>
             <div style={contactCardRightStyle}>
-                text
+                <div style={contactTitleStyle}>
+                    {props.data.username}
+                </div>
+                <div style={lastMessageStyle}>
+                    {props.lastMessageMetadata.viewStatus}
+                    {props.lastMessageMetadata.intro}
+                </div>
             </div>
         </div>
     )

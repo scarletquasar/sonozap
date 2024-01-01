@@ -4,7 +4,11 @@ import { ContactCard } from "./ContactCard";
 
 const getContactComponents = (contacts: ProfileContextState['contextValue']['contacts']) => {
     return contacts.map(contact => {
-        return <ContactCard data={contact} />
+        const lastMessageMetadata = {
+            intro: 'Hello world',
+            viewStatus: 'read' as const
+        }; //Todo: Fetch last message metadata
+        return <ContactCard data={contact} lastMessageMetadata={lastMessageMetadata} />
     })
 };
 
