@@ -9,11 +9,17 @@ type Profile {
     contacts: [Profile]
 }
 
-type Contact  {
+type Contact {
     profile: Profile
+}
+
+type ProfileAndToken {
+    profile: Profile
+    token: String
 }
 
 type Query {
     getProfile(uuid: String): Profile
     createProfile(profile: Profile): Profile
+    checkCredentails(number: String, password: String): Boolean
 }

@@ -1,10 +1,15 @@
 import { Profile } from "features/profiling/ProfilePresets";
-import { Database, createProfile, getProfile } from "./database";
+import { Database, authenticate, createProfile, getProfileWithContacts } from "./database";
 
 const getResolvers = (db: Database) => ({
     Query: {
-        getProfile: async (_: unknown, { uuid }: { uuid: string }) => getProfile(uuid, db),
-        createProfile: async (_: unknown, { profile }: { profile: Profile }) => createProfile(profile, db),
+        getProfileWithContacts: async (_: unknown, { uuid }: { uuid: string }) => getProfileWithContacts(uuid, db),
+        createProfile: async (_: unknown, 
+            { profile, password }: 
+            { profile: Profile, password: string }) => createProfile(profile, password, db),
+        authenticate: async (_: unknown, 
+            { number, password }: 
+            { number: string, password: string }) => await authenticate(number, password, db),
     }
 });
 
