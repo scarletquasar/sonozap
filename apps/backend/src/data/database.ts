@@ -52,4 +52,4 @@ const createProfile = async (profile: Profile, db: Database) => {
     return validProfile;
 }
 
-export { getProfile, createProfile }
+export { Database, getProfile, createProfile }

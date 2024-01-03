@@ -1,11 +1,11 @@
 import { Profile } from "features/profiling/ProfilePresets";
-import { createProfile, getProfile } from "./database";
+import { Database, createProfile, getProfile } from "./database";
 
-const resolvers = {
+const getResolvers = (db: Database) => ({
     Query: {
-        getProfile: async (_: unknown, { uuid }: { uuid: string }) => getProfile(uuid),
-        createProfile: async (_: unknown, { profile }: { profile: Profile }) => createProfile(profile),
+        getProfile: async (_: unknown, { uuid }: { uuid: string }) => getProfile(uuid, db),
+        createProfile: async (_: unknown, { profile }: { profile: Profile }) => createProfile(profile, db),
     }
-};
+});
 
-export { resolvers }
+export { getResolvers }
