@@ -21,7 +21,7 @@ const contactCardLeftStyle = {
 const contactCardRightStyle = {
     width: '88%',
     borderBottom: '1px solid #2E3F49',
-    paddingBottom: '3%'
+    paddingBottom: '2%'
 };
 
 const contactPhotoStyle = {

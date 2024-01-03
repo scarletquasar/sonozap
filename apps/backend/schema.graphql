@@ -1,0 +1,19 @@
+type Profile {
+    uuid: String!
+    presentationId: String!
+    username: String!
+    bio: String!
+    number: String!
+    photo: String
+    password: String
+    contacts: [Profile]
+}
+
+type Contact  {
+    profile: Profile
+}
+
+type Query {
+    getProfile(uuid: String): Profile
+    createProfile(profile: Profile): Profile
+}
