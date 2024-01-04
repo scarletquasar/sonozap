@@ -2,14 +2,24 @@ import { Profile } from "./presets.js";
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { z } from 'zod';
 import { and, eq } from "drizzle-orm";
-import { createJwt } from "./authentication.js";
+import { createJwt, validateAndParseJwt } from "./authentication.js";
 import { profileTable } from "../database/schema.js";
 
 type Database = PostgresJsDatabase<Record<string, any>>;
 type ProfileWithContacts = Profile & { contacts?: Profile[] }
 
-const getProfileWithContacts = async (uuid: string, db: Database, isContactProfile = false): Promise<ProfileWithContacts> => {
+const getProfileWithContacts = async (
+    uuid: string, 
+    token: string, 
+    db: Database, 
+    isContactProfile = false,
+    systemCall = false
+): Promise<ProfileWithContacts> => {
     const validUUID = await z.string().uuid().parseAsync(uuid);
+
+    if (!systemCall) {
+        await validateAndParseJwt(token);
+    }
 
     const profile = (await db
         .select({ 
@@ -27,15 +37,17 @@ const getProfileWithContacts = async (uuid: string, db: Database, isContactProfi
         return { ...profile, contacts: [] };
     }
 
-    const contactPromises = profile.contacts.map(uuid => getProfileWithContacts(uuid, db, true));
+    const contactPromises = profile.contacts.map(uuid => getProfileWithContacts(uuid, token, db, true));
     const contacts = await Promise.all(contactPromises) as Profile[];
 
     return { ...profile, contacts } as ProfileWithContacts;
 }
 
-const createProfile = async (profile: Profile, password: string, db: Database) => {
+const createProfile = async (profile: Profile, password: string, token: string, db: Database) => {
     const validProfile = await Profile.parseAsync(profile);
     const insertionProfile = {...validProfile, contacts: validProfile.contacts };
+
+    await validateAndParseJwt(token);
 
     await db
         .insert(profileTable)
@@ -68,7 +80,7 @@ const authenticate = async (number: string, password: string, db: Database) => {
         throw new Error('Invalid credentials or non-existent user');
     }
 
-    const profile = await getProfileWithContacts(match[0].uuid, db);
+    const profile = await getProfileWithContacts(match[0].uuid, null, db, false, true);
     const tokens = await createJwt(profile);
 
     return tokens;

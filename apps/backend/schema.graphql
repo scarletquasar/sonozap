@@ -29,7 +29,7 @@ type AccessTokens {
 }
 
 type Query {
-    getProfileWithContacts(uuid: String): Profile
-    createProfile(profile: ProfileInput): Profile
+    getProfileWithContacts(uuid: String, token: String): Profile
+    createProfile(profile: ProfileInput, token: String): Profile
     authenticate(number: String, password: String): AccessTokens
 }

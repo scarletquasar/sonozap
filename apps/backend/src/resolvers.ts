@@ -3,10 +3,12 @@ import { Database, authenticate, createProfile, getProfileWithContacts } from ".
 
 const getResolvers = (db: Database) => ({
     Query: {
-        getProfileWithContacts: async (_: unknown, { uuid }: { uuid: string }) => getProfileWithContacts(uuid, db),
+        getProfileWithContacts: async (_: unknown, 
+            { uuid, token }: 
+            { uuid: string, token: string }) => getProfileWithContacts(uuid, token, db),
         createProfile: async (_: unknown, 
-            { profile, password }: 
-            { profile: Profile, password: string }) => createProfile(profile, password, db),
+            { profile, password, token }: 
+            { profile: Profile, password: string, token: string }) => createProfile(profile, token, password, db),
         authenticate: async (_: unknown, 
             { number, password }: 
             { number: string, password: string }) => await authenticate(number, password, db),
