@@ -1,5 +1,5 @@
-import { Profile } from "features/profiling/ProfilePresets";
-import { Database, authenticate, createProfile, getProfileWithContacts } from "./database";
+import { Profile } from "./features/profiling/presets.js";
+import { Database, authenticate, createProfile, getProfileWithContacts } from "./features/profiling/data.js";
 
 const getResolvers = (db: Database) => ({
     Query: {

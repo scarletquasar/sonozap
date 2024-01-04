@@ -5,21 +5,31 @@ type Profile {
     bio: String!
     number: String!
     photo: String
-    password: String
     contacts: [Profile]
+}
+
+input ProfileInput {
+    uuid: String!
+    presentationId: String!
+    username: String!
+    bio: String!
+    number: String!
+    photo: String
 }
 
 type Contact {
     profile: Profile
 }
 
-type ProfileAndToken {
-    profile: Profile
+type AccessTokens {
+    refreshToken: String
     token: String
+    refreshTokenExpiration: String
+    tokenExpiration: String
 }
 
 type Query {
-    getProfile(uuid: String): Profile
-    createProfile(profile: Profile): Profile
-    checkCredentails(number: String, password: String): Boolean
+    getProfileWithContacts(uuid: String): Profile
+    createProfile(profile: ProfileInput): Profile
+    authenticate(number: String, password: String): AccessTokens
 }

@@ -1,21 +1,28 @@
-import { Profile } from "features/profiling/ProfilePresets";
+import { Profile } from "./presets.js";
 import { Jwt } from "jwt-destroy"
 import { z } from "zod"
-// TODO: Update secret with environment variable value
 
 const createJwt = async (profile: Profile) => {
-    const handler = new Jwt('secret');
+    const handler = new Jwt(process.env.JWT_SECRET);
     const token = await handler.generate(profile, '72h');
     const refreshToken = await handler.generate({ profileId: profile.uuid }, '144h');
 
+    const tokenExpiration = new Date();
+    tokenExpiration.setHours(tokenExpiration.getHours() + 72);
+
+    const refreshTokenExpiration = new Date();
+    refreshTokenExpiration.setHours(tokenExpiration.getHours() + 72);
+
     return { 
-        token: token.token as string, 
-        refreshToken: refreshToken.token as string
+        token: token.toKen as string, 
+        refreshToken: refreshToken.toKen as string,
+        tokenExpiration: tokenExpiration.toISOString(),
+        refreshTokenExpiration: refreshTokenExpiration.toISOString()
     }
 }
 
 const validateAndParseJwt = async (token: string, isRefreshToken = false) => {
-    const handler = new Jwt('secret');
+    const handler = new Jwt(process.env.JWT_SECRET);
     const result: { status: string, data?: Record<string, unknown> } = await handler.decode(token);
 
     if (result.status === 'Invalid') {

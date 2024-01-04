@@ -1,22 +1,11 @@
-import { Profile } from "features/profiling/ProfilePresets";
-import { pgTable, uuid, varchar, json } from "drizzle-orm/pg-core";
+import { Profile } from "./presets.js";
 import { PostgresJsDatabase } from 'drizzle-orm/postgres-js';
 import { z } from 'zod';
 import { and, eq } from "drizzle-orm";
-import { createJwt } from "./authentication";
+import { createJwt } from "./authentication.js";
+import { profileTable } from "../database/schema.js";
 
 type Database = PostgresJsDatabase<Record<string, any>>;
-
-const profileTable = pgTable('profiles', {
-    uuid: uuid('uuid').primaryKey(),
-    username: varchar('username'),
-    number: varchar('number'),
-    bio: varchar('bio'),
-    photo: varchar('photo'),
-    password: varchar('password'),
-    contacts: json('contacts')
-});
-
 type ProfileWithContacts = Profile & { contacts?: Profile[] }
 
 const getProfileWithContacts = async (uuid: string, db: Database, isContactProfile = false): Promise<ProfileWithContacts> => {

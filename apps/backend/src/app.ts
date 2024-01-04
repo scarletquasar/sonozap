@@ -1,16 +1,31 @@
 import Fastify from 'fastify';
 import Mercurius from 'mercurius';
 import { readFile } from 'fs/promises';
-import { getResolvers } from './data/resolvers';
-import { Database } from './data/database';
+import { getResolvers } from './resolvers.js';
+import { Database } from './features/profiling/data.js';
 import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
+import { configDotenv } from 'dotenv';
+import { join } from 'path';
 
 const main = async () => {
-    const schema = await readFile('/schema.graphql').then(buffer => buffer.toString());
+    if (process.env.CURRENT_ENV !== 'production') {
+        configDotenv({
+            path: join(process.cwd(), '../..', '.env')
+        })
+    }
+
+    const schema = await readFile('./schema.graphql').then(buffer => buffer.toString());
     const fastify = Fastify({ logger: true });
 
-    const queryClient = postgres("postgres://postgres:adminadmin@0.0.0.0:5432/db");
+    const queryClient = postgres({
+        user: process.env.POSTGRES_USER,
+        pass: process.env.POSTGRES_PASSWORD,
+        db: process.env.PG_DATABASE,
+        host: process.env.PG_HOST,
+        port: Number(process.env.PG_PORT)
+    });
+
     const db: Database = drizzle(queryClient);
 
     fastify.register(Mercurius, {
@@ -18,21 +33,19 @@ const main = async () => {
         resolvers: getResolvers(db)
     });
 
-    fastify.register(require('@fastify/websocket'), {
+    fastify.register(import('@fastify/websocket'), {
         options: { maxPayload: 1048576 }
-    });
-      
-    fastify.get('/core', async function (req, reply) {
-        const request = req as { body: { query: string } };
-        const query = request.body.query;
-        const response = await reply.graphql(query);
-
-        reply.send(response);
     });
 
     fastify.get('/messaging', { websocket: true }, (conn, req) => {
 
     });
+
+    await fastify
+        .listen({ port: Number(process.env.BACKEND_PORT) })
+        .catch(reason => {
+            console.log(reason);
+        });
 };
 
-main();
+await main();
