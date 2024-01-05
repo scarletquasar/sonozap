@@ -3,13 +3,25 @@ Sonozap is a generic clone of WhatsApp web built on top of React, GraphQL and Po
 
 # Getting started
 
-The requirements to execute that project are:
+### Executing the application
 
-- NodeJS
-- Turborepo
-- Docker (docker-compose)
-- Relay VSCode extension (optional)
-- GraphQL VSCode extension (optional)
+- There are some requirements before executing the project:
+    - NodeJS
+    - pnpm
+    - Turborepo
+    - Docker (docker-compose)
+    - Relay VSCode extension (optional)
+    - GraphQL VSCode extension (optional)
+
+- A `.env` file in the project root is necessary in order to execute it. You can rename the pre-existing file `.env.example` file to `.env` and execute directly without problems.
+- After meeting all the requirements, run the command:
+    ```
+    npx turbo run dev
+    ```
+
+### Executing the migrations
+
+Currently, the migration process is being executed manually, this will change in the future. For now, there is need to access the self-hosted docker pgadmin instance (http://localhost:5050/browser/) and manually create the tables. The global schema can be accessed [here](./apps/backend/src/features/database/schema.ts).
 
 # Stack
 
