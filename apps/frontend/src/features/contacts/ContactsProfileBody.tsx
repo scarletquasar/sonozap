@@ -1,4 +1,4 @@
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { ProfileContext } from "../profiling/ProfileContext";
 
 const photoStyle = {

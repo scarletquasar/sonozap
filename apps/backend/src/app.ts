@@ -30,11 +30,17 @@ const main = async () => {
 
     fastify.register(Mercurius, {
         schema,
-        resolvers: getResolvers(db)
+        resolvers: getResolvers(db),
+        routes: false
     });
 
     fastify.register(import('@fastify/websocket'), {
         options: { maxPayload: 1048576 }
+    });
+
+    fastify.get('/graphql', async function (req, reply) {
+        const body = req.body as { query: string, variables: unknown };
+        return reply.graphql(body.query, body.variables);
     });
 
     fastify.get('/messaging', { websocket: true }, (conn, req) => {

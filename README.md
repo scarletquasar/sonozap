@@ -1,20 +1,46 @@
-# Sonozap
-Whatsapp Web clone monorepo (backend and frontend) for the Woovi Challenge.
+# <img src="./assets/whatsapp-icon.png" width="40"> Sonozap
+Sonozap is a generic clone of WhatsApp web built on top of React, GraphQL and PostgreSQL focused on providing contacts management, real-time messaging and other awesome features. The project works with [Relay](https://relay.dev/) and [Mercurius](https://github.com/mercurius-js/mercurius) as both client and server providers for GraphQL and [Drizzle](https://orm.drizzle.team/) as relational ORM to handle data persistance with PGSQL. 
 
 # Stack
 
-- Frontend
-    - TypeScript
-    - React.js
-    - Relay
-    - Zod
+Sonozap works with GraphQL, functioning with standard queries and mutations to provide a basic interface for features like contacts management and social media interactions and websocket-based queries and mutations to provide real-time chat with subscriptions. 
 
-- Backend
-    - TypeScript
-    - Express.js
-    - GraphQL
-    - Drizzle
-    - Zod
+The project is **currently** divided in three different packages: **backend** - where the business logic and connection to the database is implemented, **frontend** - where the React ui is located and **local-infra** which is focused on providing local development infrastructure (currently a PostgreSQL and a pgadmin containers).
+
+The development arrangement selected for this project was monorepo and to achieve that, the tool [Turborepo](https://turbo.build/) was used to mount the pipelines and organize the packages. This project can be easily expanded even to have entire features located in separated microservices from the monolithic backend that can or can not point to a new PostgreSQL instance.
+
+# Architecture
+
+> Note: This project is in constant evolution and the architecture section may be updated based on changes that may happen to the code, this includes: feature additions or deletions, schema changes, database changes and others.
+
+When written, this project's architecture was developed to provide a very simple CRUD-application with an integrated real-time feature, but at the same time be easily expandable. Between the selected design patterns for that project, one of the most important ones was **folder by feature**, that implementation provided a clear path to where the logic should be located and what is needed to finish each isolated feature without having impact (or at least having low impact) in other features, avoiding that a single problem inside a component can cause an application entire breakdown.
+
+### Frontend
+
+<div>
+<img align="left" src="./assets/frontend-folder-features.png">
+
+In the frontend application each folder in the features folder is representing a single, isolated feature that apply their own business rules. The folder can contain components and usual logic (like contexts and separated methods). It may not map to the backend ones since one backend feature, for example, can be divided into more or the contrary.
+
+</div>
+<br>
+
+### Backend
+
+<div>
+<img align="left" src="./assets/backend-folder-features.png">
+
+In the backend application each folder in the features folder is representing a single feature that apply their own business rules. The folder usually contains logic that will be futurely applied to the resolvers directly and validation models .
+
+</div>
+
+### Overall structure diagram
+
+The overall structure diagram provides an easy-to-understand view of the current applications running in this project, the objective is to understand, visually, how the parts are connected and the meaning behind the workflow processes.
+
+<img src="./assets/overall-diagram.png">
+
+<br>
 
 # TODO
 
