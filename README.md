@@ -34,18 +34,10 @@ In the backend application each folder in the features folder is representing a 
 
 </div>
 
+<br>
+
 ### Overall structure diagram
 
 The overall structure diagram provides an easy-to-understand view of the current applications running in this project, the objective is to understand, visually, how the parts are connected and the meaning behind the workflow processes.
 
 <img src="./assets/overall-diagram.png">
-
-<br>
-
-# TODO
-
-- [x] [Create monorepo base structure with running front/back](https://github.com/scarletquasar/sonozap/issues/1)
-- [ ] [Dockerize (docker-compose) front/back](https://github.com/scarletquasar/sonozap/issues/2)
-- [ ] [Create modelling for backend with `Contact`, `User` and `Chat`](https://github.com/scarletquasar/sonozap/issues/3)
-- [ ] [Implement functionality for the backend (chat + contact view)](https://github.com/scarletquasar/sonozap/issues/4)
-- [ ] [Create SPA page for the frontend with chat + contacts](https://github.com/scarletquasar/sonozap/issues/5)
