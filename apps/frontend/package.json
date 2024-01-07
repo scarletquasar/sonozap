@@ -28,13 +28,13 @@
     "react-relay": "^16.1.0",
     "react-router": "^6.21.1",
     "react-router-dom": "^6.21.1",
-    "relay-runtime": "^16.1.0",
-    "tailwindcss": "^3.4.0"
+    "relay-runtime": "^16.1.0"
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "^0.0.39",
     "@types/react": "^18.2.43",
     "@types/react-dom": "^18.2.17",
+    "@types/react-relay": "^16.0.5",
     "@types/relay-runtime": "^14.1.21",
     "@typescript-eslint/eslint-plugin": "^6.14.0",
     "@typescript-eslint/parser": "^6.14.0",

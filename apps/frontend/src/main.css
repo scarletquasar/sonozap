@@ -1,17 +1,22 @@
 * {
-    box-sizing: border-box;
+  box-sizing: border-box;
 }
 
 html, body {
-    width: 100%;
-    height: 100%;
-
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .p-card-body .p-card-content {
-    padding: 0;
-    width: inherit;
+  padding: 0;
+  width: inherit;
+}
+
+.layout-login-fieldset .p-fieldset-content {
+  display: flex;
+  flex-direction: column;
+  gap: 1vh
 }

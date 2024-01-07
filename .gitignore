@@ -132,3 +132,6 @@ devdist
 
 # Drizzle
 drizzle
+
+# Relay
+__generated__

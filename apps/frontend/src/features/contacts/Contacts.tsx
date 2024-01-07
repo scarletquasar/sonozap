@@ -1,4 +1,3 @@
-import { createBrowserRouter } from "react-router-dom";
 import { ContactsContext, ContactsState, contactsPanels, style } from "./ContactsPresets";
 import { useState } from "react";
 
@@ -7,8 +6,7 @@ const defaultContextValue: ContactsState['contextValue'] = {
     currentContact: null
 }
 
-const Contacts = (props: { router: ReturnType<typeof createBrowserRouter>}) => {
-    console.log(props);
+const Contacts = () => {
     const [contextValue, setContextValue] = useState(defaultContextValue);
 
     return (

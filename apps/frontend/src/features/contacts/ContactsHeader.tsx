@@ -37,6 +37,10 @@ const headerButtonStyle = {
     padding: '5%'
 }
 
+const headerButtonIconStyle = {
+    fontSize: 'calc(1dvw + 1dvh)'
+}
+
 function ContactsHeader(props: { style: React.CSSProperties }) {
     const context = useContext(ContactsContext);
 
@@ -54,8 +58,9 @@ function ContactsHeader(props: { style: React.CSSProperties }) {
                     style={profilePicStyle} 
                     src="/no-photo-placeholder.jpg" 
                     onClick={() => context.setContextValue({
-                    currentPanel: 'profile'
-                })} />
+                        ...context.contextValue,
+                        currentPanel: 'profile'
+                    })} />
             </div>
             <div style={rightBlockStyle}>
                 <button
@@ -64,8 +69,8 @@ function ContactsHeader(props: { style: React.CSSProperties }) {
                         setTimeout(() => setOptionsButtonBg('none'), 200);
                     }}
                     style={{...headerButtonStyle, background: optionsButtonBg}}>
-                    <span className="material-symbols-outlined">
-                    more_vert
+                    <span style={headerButtonIconStyle} className="material-symbols-outlined">
+                        more_vert
                     </span>
                 </button>
                 <button 
@@ -74,8 +79,8 @@ function ContactsHeader(props: { style: React.CSSProperties }) {
                         setTimeout(() => setChatsButtonBg('none'), 200);
                     }}
                     style={{...headerButtonStyle, background: chatsButtonBg}}>
-                    <span className="material-symbols-outlined">
-                    add_comment
+                    <span style={headerButtonIconStyle} className="material-symbols-outlined">
+                        add_comment
                     </span>
                 </button>
                 <button
@@ -84,8 +89,8 @@ function ContactsHeader(props: { style: React.CSSProperties }) {
                         setTimeout(() => setChannelsButtonBg('none'), 200);
                     }} 
                     style={{...headerButtonStyle, background: channelsButtonBg}}>
-                    <span className="material-symbols-outlined">
-                    maps_ugc
+                    <span style={headerButtonIconStyle} className="material-symbols-outlined">
+                        maps_ugc
                     </span>
                 </button>
                 <button 
@@ -94,8 +99,8 @@ function ContactsHeader(props: { style: React.CSSProperties }) {
                         setTimeout(() => setStatusButtonBg('none'), 200);
                     }}
                     style={{...headerButtonStyle, background: statusButtonBg}}>
-                    <span className="material-symbols-outlined">
-                    dashboard_customize
+                    <span style={headerButtonIconStyle} className="material-symbols-outlined">
+                        dashboard_customize
                     </span>
                 </button>
                 <button 
@@ -104,8 +109,8 @@ function ContactsHeader(props: { style: React.CSSProperties }) {
                         setTimeout(() => setCommsButtonBg('none'), 200);
                     }}
                     style={{...headerButtonStyle, background: commsButtonBg}}>
-                    <span className="material-symbols-outlined">
-                    groups_2
+                    <span style={headerButtonIconStyle} className="material-symbols-outlined">
+                        groups_2
                     </span>
                 </button>
             </div>

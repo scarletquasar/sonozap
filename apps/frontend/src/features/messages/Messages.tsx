@@ -1,5 +1,4 @@
 import { Card } from "primereact/card";
-import { createBrowserRouter } from "react-router-dom";
 
 const style = {
     width: '70%',
@@ -22,8 +21,7 @@ const messageInputBoxStyle = {
     borderRadius: 0
 }
 
-const Messages = (props: { router: ReturnType<typeof createBrowserRouter>}) => {
-    console.log(props);
+const Messages = () => {
     return (
         <div style={style}>
             <Card style={headerStyle}></Card>
