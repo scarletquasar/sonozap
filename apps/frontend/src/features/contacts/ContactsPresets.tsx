@@ -1,4 +1,3 @@
-import { Card } from "primereact/card";
 import { createContext } from "react";
 import { ContactsHeader } from "./ContactsHeader";
 import { ContactsProfileHeader } from "./ContactsProfileHeader";
@@ -20,7 +19,8 @@ const headerStyle = {
     alignItems: 'center',
     paddingInline: '3%',
     width: '100%',
-    background: '#202C33'
+    background: '#202C33',
+    fontSize: 'calc(1dvw + 1dvh)',
 } as React.CSSProperties;
 
 const searchStyle = {

@@ -7,7 +7,7 @@ const style = {
     display: 'flex',
     backgroundImage: "url('./whatsapp-bg.jpg')",
     backgroundSize: '20%',
-    padding: '0'
+    padding: '0',
 }
 
 const LayoutAuthenticated = () => {

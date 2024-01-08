@@ -5,7 +5,7 @@ import { Button } from 'primereact/button';
 import { fetchFunction } from "../fetching/fetchFunction";
 import { SetAuthenticationInfoFunction } from "./Layout";
 import { Fieldset } from 'primereact/fieldset';
-import { ToastContainer, toast  } from 'react-toastify';
+import { toast } from 'react-toastify';
 
 const LayoutLoginQuery = `
     query LayoutLoginQuery($number: String!, $password: String!) {
@@ -24,18 +24,6 @@ const LayoutLogin = (props: { setInfoMethod: SetAuthenticationInfoFunction }) =>
 
     return (
         <Fieldset className="layout-login-fieldset">
-            <ToastContainer
-                position="top-right"
-                autoClose={5000}
-                hideProgressBar={false}
-                newestOnTop={false}
-                closeOnClick
-                rtl={false}
-                pauseOnFocusLoss
-                draggable
-                pauseOnHover
-                theme="dark"
-            />
             <InputText placeholder={'Number'} value={number} onChange={(e) => setNumber(e.target.value)} />   
             <InputText placeholder={'Password'} value={password} onChange={(e) => setPassword(e.target.value)} />
             <Button label="Login" onClick={async () => {

@@ -2,6 +2,7 @@ import { ProfileContext, ProfileContextState } from '../profiling/ProfileContext
 import { useState } from 'react';
 import { LayoutLogin } from './LayoutLogin';
 import { LayoutAuthenticated } from './LayoutAuthenticated';
+import { ToastContainer } from 'react-toastify';
 
 type SetAuthenticationInfoFunction = (info: { 
   token: string, 
@@ -30,6 +31,18 @@ const Layout = () => {
       },
       setContextValue: setProfile as ProfileContextState['setContextValue']
     }}>
+      <ToastContainer
+          position="top-right"
+          autoClose={5000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+          theme="dark"
+      />
       {!authenticationInfo.token 
         ? <LayoutLogin setInfoMethod={setAuthenticationInfo}/>
         : <LayoutAuthenticated />}

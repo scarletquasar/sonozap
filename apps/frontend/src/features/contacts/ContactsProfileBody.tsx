@@ -1,10 +1,15 @@
-import { useContext, useEffect } from "react";
+import { useContext } from "react";
 import { ProfileContext } from "../profiling/ProfileContext";
+
+const photoContainerStyle = {
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+}
 
 const photoStyle = {
     borderRadius: '100%',
-    width: '12em',
-    height: '12em'
+    width: '50%'
 };
 
 const nameBlockStyle = {
@@ -66,7 +71,7 @@ function ContactsProfileBody(props: { style: React.CSSProperties }) {
 
     return (
         <div style={props.style}>
-            <div>
+            <div style={photoContainerStyle}>
                 <img style={photoStyle} src='./no-photo-placeholder.jpg' />
             </div>
             <div style={nameBlockStyle}>
