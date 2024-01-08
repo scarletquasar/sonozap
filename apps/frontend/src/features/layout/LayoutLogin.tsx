@@ -5,9 +5,10 @@ import { Button } from 'primereact/button';
 import { fetchFunction } from "../fetching/fetchFunction";
 import { SetAuthenticationInfoFunction } from "./Layout";
 import { Fieldset } from 'primereact/fieldset';
+import { ToastContainer, toast  } from 'react-toastify';
 
 const LayoutLoginQuery = `
-    {
+    query LayoutLoginQuery($number: String!, $password: String!) {
         authenticate(number: $number, password: $password) {
             token
             refreshToken
@@ -23,16 +24,56 @@ const LayoutLogin = (props: { setInfoMethod: SetAuthenticationInfoFunction }) =>
 
     return (
         <Fieldset className="layout-login-fieldset">
+            <ToastContainer
+                position="top-right"
+                autoClose={5000}
+                hideProgressBar={false}
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
             <InputText placeholder={'Number'} value={number} onChange={(e) => setNumber(e.target.value)} />   
             <InputText placeholder={'Password'} value={password} onChange={(e) => setPassword(e.target.value)} />
             <Button label="Login" onClick={async () => {
                 if (!!number && !!password) {
                     const observable = fetchFunction({
                         text: LayoutLoginQuery
-                    }, { number, password });
+                    }, { 
+                        number, 
+                        password 
+                    });
+
+                    toast.info('Connecting to server...', {
+                        position: "top-right",
+                        autoClose: 20000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                    });
 
                     observable.toPromise().then((response: GraphQLResponseWithData) => {
                         if (response.errors) {
+                            toast.dismiss();
+
+                            const errorOptions = {
+                                position: "top-right",
+                                autoClose: 5000,
+                                hideProgressBar: false,
+                                closeOnClick: true,
+                                pauseOnHover: true,
+                                draggable: true,
+                                progress: undefined,
+                                theme: "dark",
+                            } as const;
+
+                            response.errors.map(error => toast.error(error.message, errorOptions));
                             return;
                         }
 
@@ -53,6 +94,21 @@ const LayoutLogin = (props: { setInfoMethod: SetAuthenticationInfoFunction }) =>
                             refreshToken, 
                             tokenExpiration, 
                             refreshTokenExpiration 
+                        });
+
+                        toast.dismiss();
+                    })
+                    .catch(error => {
+                        toast.dismiss();
+                        toast.error(error.message, {
+                            position: "top-right",
+                            autoClose: 5000,
+                            hideProgressBar: false,
+                            closeOnClick: true,
+                            pauseOnHover: true,
+                            draggable: true,
+                            progress: undefined,
+                            theme: "dark",
                         });
                     })
                 }

@@ -65,8 +65,16 @@ const createProfile = async (profile: Profile, password: string, token: string, 
 }
 
 const authenticate = async (number: string, password: string, db: Database) => {
-    const validNumber = await z.string().max(16).regex(/^\d+$/).parseAsync(number);
-    const validPassword = await z.string().max(360).parseAsync(password);
+    const validNumber = await z
+        .string()
+        .max(16, 'Maximum number size: 16 characters')
+        .regex(/^\d+$/, 'Invalid phone number')
+        .parseAsync(number);
+
+    const validPassword = await z
+        .string()
+        .max(360, 'Maximum password size: 360 characters')
+        .parseAsync(password);
 
     const match = await db
         .select({ uuid: profileTable.uuid })

@@ -31,7 +31,7 @@ const Layout = () => {
       setContextValue: setProfile as ProfileContextState['setContextValue']
     }}>
       {!authenticationInfo.token 
-        ? <LayoutAuthenticated />/*<LayoutLogin setInfoMethod={setAuthenticationInfo}/>*/
+        ? <LayoutLogin setInfoMethod={setAuthenticationInfo}/>
         : <LayoutAuthenticated />}
 
     </ProfileContext.Provider>

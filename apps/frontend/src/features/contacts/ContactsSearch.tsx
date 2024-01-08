@@ -1,6 +1,5 @@
 const searchBoxStyle = {
     width: '100%',
-    height: '1.5em',
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center'

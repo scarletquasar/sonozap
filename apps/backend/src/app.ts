@@ -7,6 +7,7 @@ import { drizzle } from 'drizzle-orm/postgres-js';
 import postgres from 'postgres';
 import { configDotenv } from 'dotenv';
 import { join } from 'path';
+import cors, { FastifyCorsOptions } from '@fastify/cors';
 
 const main = async () => {
     if (process.env.CURRENT_ENV !== 'production') {
@@ -34,13 +35,20 @@ const main = async () => {
         routes: false
     });
 
+    //TODO: Setup prod uri
+    const corsOptions: FastifyCorsOptions = {
+        origin: process.env.CURRENT_ENV === 'development' ? true : 'prod-uri'
+    };
+
+    fastify.register(cors, corsOptions);
+
     fastify.register(import('@fastify/websocket'), {
         options: { maxPayload: 1048576 }
     });
 
-    fastify.get('/graphql', async function (req, reply) {
+    fastify.post('/graphql', async function (req, reply) {
         const body = req.body as { query: string, variables: unknown };
-        return reply.graphql(body.query, body.variables);
+        return reply.graphql(body.query, {}, body.variables);
     });
 
     fastify.get('/messaging', { websocket: true }, (conn, req) => {

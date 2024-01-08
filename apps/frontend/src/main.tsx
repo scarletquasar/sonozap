@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { Layout } from './features/layout/Layout';
 import 'primereact/resources/themes/bootstrap4-dark-blue/theme.css';
+import 'react-toastify/dist/ReactToastify.css';
 import './main.css';
 import {
   Store,
