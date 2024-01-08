@@ -18,7 +18,18 @@ const messagesStyle = {
 
 const messageInputBoxStyle = {
     height: '6.7%',
-    borderRadius: 0
+    borderRadius: 0,
+    display: 'flex',
+    justifyContent: 'center',
+    alignItems: 'center'
+}
+
+const messageTextBoxStyle = {
+    width: '50vw',
+    height: '100%',
+    borderRadius: '1em',
+    border: 'none',
+    padding: '1em',
 }
 
 const Messages = () => {
@@ -26,7 +37,12 @@ const Messages = () => {
         <div style={style}>
             <Card style={headerStyle}></Card>
             <Card style={messagesStyle}></Card>
-            <Card style={messageInputBoxStyle}></Card>
+            <Card style={messageInputBoxStyle}>
+                <input 
+                    style={messageTextBoxStyle} 
+                    type="text"
+                    placeholder="Type a message..." />
+            </Card>
         </div>
     )
 };

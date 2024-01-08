@@ -1,5 +1,8 @@
-import { useContext } from "react";
-import { ProfileContext } from "../profiling/ProfileContext";
+import { ProfileContext } from '../profiling/ProfileContext';
+import { useContext, useEffect, useState } from 'react';
+import { graphql, loadQuery } from 'react-relay';
+import { environment } from '../../environment';
+import { ContactsProfileBodyField } from './ContactsProfileBodyField';
 
 const photoContainerStyle = {
     display: 'flex',
@@ -66,8 +69,25 @@ const bioTextStyle = {
     fontSize: '0.9em'
 };
 
+const ContactsProfileBodyQuery = graphql`
+  query ContactsProfileBodyQuery($uuid: String, $token: String) {
+    getProfileWithContacts(uuid: $uuid, token: $token) {
+      username,
+      bio
+    }
+  }
+`;
+
 function ContactsProfileBody(props: { style: React.CSSProperties }) {
     const profileContext = useContext(ProfileContext);
+    const [queryReference, setQueryReference] = useState<ReturnType<typeof loadQuery>>()
+
+    useEffect(() => {
+        const uuid = profileContext.contextValue.uuid;
+        const token = localStorage.getItem('token');
+        const reference = loadQuery(environment, ContactsProfileBodyQuery, { uuid, token });
+        setQueryReference(reference);
+    }, [profileContext.contextValue.uuid]);
 
     return (
         <div style={props.style}>
@@ -81,7 +101,11 @@ function ContactsProfileBody(props: { style: React.CSSProperties }) {
                 <br />
                 <div style={nameContentStyle}>
                     <div style={nameContentLeft}>
-                        {profileContext.contextValue.username}
+                    {queryReference && 
+                        <ContactsProfileBodyField
+                        query={ContactsProfileBodyQuery}
+                        queryReference={queryReference}
+                        selection='username' />}
                     </div>
                     <div style={nameContentRight}>
                         <button style={nameContentEditButtonStyle}>
@@ -103,7 +127,11 @@ function ContactsProfileBody(props: { style: React.CSSProperties }) {
                 <br />
                 <div style={bioContentStyle}>
                     <div style={bioContentLeft}>
-                        {profileContext.contextValue.bio}
+                        {queryReference && 
+                            <ContactsProfileBodyField
+                            query={ContactsProfileBodyQuery}
+                            queryReference={queryReference}
+                            selection='bio' />}
                     </div>
                     <div style={bioContentRight}>
                         <button style={nameContentEditButtonStyle}>

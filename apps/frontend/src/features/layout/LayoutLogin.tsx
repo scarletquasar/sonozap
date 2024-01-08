@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { GraphQLResponseWithData } from "relay-runtime";
 import { InputText } from 'primereact/inputtext';
 import { Button } from 'primereact/button';
@@ -6,6 +6,8 @@ import { fetchFunction } from "../fetching/fetchFunction";
 import { SetAuthenticationInfoFunction } from "./Layout";
 import { Fieldset } from 'primereact/fieldset';
 import { toast } from 'react-toastify';
+import { ProfileContext } from "../profiling/ProfileContext";
+import { decodeJwt } from "../fetching/jwt";
 
 const LayoutLoginQuery = `
     query LayoutLoginQuery($number: String!, $password: String!) {
@@ -21,6 +23,7 @@ const LayoutLoginQuery = `
 const LayoutLogin = (props: { setInfoMethod: SetAuthenticationInfoFunction }) => {
     const [number, setNumber] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+    const profileContext = useContext(ProfileContext);
 
     return (
         <Fieldset className="layout-login-fieldset">
@@ -76,6 +79,17 @@ const LayoutLogin = (props: { setInfoMethod: SetAuthenticationInfoFunction }) =>
                         localStorage.setItem('refresh-token', refreshToken);
                         localStorage.setItem('token-expiration', tokenExpiration);
                         localStorage.setItem('refresh-token-expiration', refreshTokenExpiration);
+
+                        const tokenPayload = decodeJwt(token);
+                        
+                        profileContext.setContextValue({
+                            uuid: tokenPayload.uuid,
+                            username: tokenPayload.username,
+                            bio: tokenPayload.bio,
+                            number: tokenPayload.number,
+                            photo: tokenPayload.photo,
+                            contacts: tokenPayload.contacts
+                        })
 
                         props.setInfoMethod({ 
                             token, 
