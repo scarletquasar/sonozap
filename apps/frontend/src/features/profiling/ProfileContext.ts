@@ -20,11 +20,12 @@ interface ProfileContextState {
 
 const ProfileContext = createContext<ProfileContextState>({
     contextValue: {
-        uuid: '',
-        username: '',
-        number: '',
-        bio: '',
-        contacts: []
+        uuid: localStorage.getItem('uuid') ?? '',
+        username: localStorage.getItem('username') ?? '',
+        bio: localStorage.getItem('bio') ?? '',
+        number: localStorage.getItem('number') ?? '',
+        photo: localStorage.getItem('photo') ?? '',
+        contacts: JSON.parse(localStorage.getItem('contacts') ?? '[]')
     },
     setContextValue: () => {}
 });

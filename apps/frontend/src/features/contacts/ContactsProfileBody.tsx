@@ -1,5 +1,4 @@
-import { ProfileContext } from '../profiling/ProfileContext';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { graphql, loadQuery } from 'react-relay';
 import { environment } from '../../environment';
 import { ContactsProfileBodyField } from './ContactsProfileBodyField';
@@ -72,22 +71,21 @@ const bioTextStyle = {
 const ContactsProfileBodyQuery = graphql`
   query ContactsProfileBodyQuery($uuid: String, $token: String) {
     getProfileWithContacts(uuid: $uuid, token: $token) {
-      username,
+      username
       bio
     }
   }
 `;
 
 function ContactsProfileBody(props: { style: React.CSSProperties }) {
-    const profileContext = useContext(ProfileContext);
     const [queryReference, setQueryReference] = useState<ReturnType<typeof loadQuery>>()
 
     useEffect(() => {
-        const uuid = profileContext.contextValue.uuid;
+        const uuid = localStorage.getItem('uuid');
         const token = localStorage.getItem('token');
         const reference = loadQuery(environment, ContactsProfileBodyQuery, { uuid, token });
         setQueryReference(reference);
-    }, [profileContext.contextValue.uuid]);
+    }, []);
 
     return (
         <div style={props.style}>
@@ -101,11 +99,11 @@ function ContactsProfileBody(props: { style: React.CSSProperties }) {
                 <br />
                 <div style={nameContentStyle}>
                     <div style={nameContentLeft}>
-                    {queryReference && 
+                    {queryReference != null ? 
                         <ContactsProfileBodyField
                         query={ContactsProfileBodyQuery}
                         queryReference={queryReference}
-                        selection='username' />}
+                        selection='username' /> : 'loading...'}
                     </div>
                     <div style={nameContentRight}>
                         <button style={nameContentEditButtonStyle}>
@@ -127,11 +125,11 @@ function ContactsProfileBody(props: { style: React.CSSProperties }) {
                 <br />
                 <div style={bioContentStyle}>
                     <div style={bioContentLeft}>
-                        {queryReference && 
+                        {queryReference != null ? 
                             <ContactsProfileBodyField
                             query={ContactsProfileBodyQuery}
                             queryReference={queryReference}
-                            selection='bio' />}
+                            selection='bio' /> : 'loading...'}
                     </div>
                     <div style={bioContentRight}>
                         <button style={nameContentEditButtonStyle}>

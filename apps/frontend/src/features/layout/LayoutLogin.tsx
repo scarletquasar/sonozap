@@ -23,7 +23,6 @@ const LayoutLoginQuery = `
 const LayoutLogin = (props: { setInfoMethod: SetAuthenticationInfoFunction }) => {
     const [number, setNumber] = useState<string>('');
     const [password, setPassword] = useState<string>('');
-    const profileContext = useContext(ProfileContext);
 
     return (
         <Fieldset className="layout-login-fieldset">
@@ -81,15 +80,13 @@ const LayoutLogin = (props: { setInfoMethod: SetAuthenticationInfoFunction }) =>
                         localStorage.setItem('refresh-token-expiration', refreshTokenExpiration);
 
                         const tokenPayload = decodeJwt(token);
-                        
-                        profileContext.setContextValue({
-                            uuid: tokenPayload.uuid,
-                            username: tokenPayload.username,
-                            bio: tokenPayload.bio,
-                            number: tokenPayload.number,
-                            photo: tokenPayload.photo,
-                            contacts: tokenPayload.contacts
-                        })
+
+                        localStorage.setItem('uuid', tokenPayload.uuid);
+                        localStorage.setItem('username', tokenPayload.username);
+                        localStorage.setItem('bio', tokenPayload.bio);
+                        localStorage.setItem('number', tokenPayload.number);
+                        localStorage.setItem('photo', tokenPayload.photo ?? '');
+                        localStorage.setItem('contacts', JSON.stringify(tokenPayload.contacts));
 
                         props.setInfoMethod({ 
                             token, 

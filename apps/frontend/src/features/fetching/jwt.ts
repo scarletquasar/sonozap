@@ -3,7 +3,10 @@ import { Buffer } from 'buffer/';
 function decodeJwt(token: string) {
     const base64Payload = token.split(".")[1];
     const payloadBuffer = Buffer.from(base64Payload);
-    return JSON.parse(payloadBuffer.toString()) as {
+
+    const payloadString = atob(atob(payloadBuffer.toString('base64')));
+
+    return JSON.parse(payloadString).data as {
         uuid: string;
         username: string;
         bio: string;

@@ -36,7 +36,7 @@ const validateAndParseJwt = async (token: string, isRefreshToken = false) => {
         return validPayload;
     }
 
-    const validPayload = await Profile.parseAsync(result.data);
+    const validPayload = await Profile.parseAsync(result.data.data);
     return validPayload;
 };
 

@@ -16,19 +16,13 @@ const getProfileWithContacts = async (
     systemCall = false
 ): Promise<ProfileWithContacts> => {
     const validUUID = await z.string().uuid().parseAsync(uuid);
-
+    
     if (!systemCall) {
         await validateAndParseJwt(token);
     }
 
     const profile = (await db
-        .select({ 
-            username: profileTable.username,
-            number: profileTable.number,
-            bio: profileTable.bio,
-            photo: profileTable.photo,
-            contacts: profileTable.contacts
-        })
+        .select()
         .from(profileTable)
         .where(eq(profileTable.uuid, validUUID))
         .limit(1))[0] as Profile;
