@@ -70,8 +70,8 @@ The overall structure diagram provides an easy-to-understand view of the current
 
 ### Feature workflows
 
-1. Real-time messaging
-
+#### 1. Real-time messaging
+    
 The messaging feature consists on providing an interface to perform real-time messaging to a contact through subscriptions (Relay useSubscription hook connected to a websocket graphql connection defined on Mercurius). The current focus is to provide a IndexedDB in frontend to store the messages while keeping it synchronized with the backend through subscriptions, accessing the database when a message event is emitted.
 
 <img src="./assets/messaging-feature-diagram.png">
