@@ -1,6 +1,10 @@
 # <img src="./assets/whatsapp-icon.png" width="30"> Sonozap
 Sonozap is a fully-featured Whatsapp clone with real-time messaging, contacts management and authentication built on top of React and Relay. The project works with [Relay](https://relay.dev/) and [Mercurius](https://github.com/mercurius-js/mercurius) as both client and server providers for GraphQL and [Drizzle](https://orm.drizzle.team/) as relational ORM to handle data persistance with PGSQL. 
 
+> [!IMPORTANT]
+> 
+> This repository is still on **development** phase and may not contain all the listed features. Releases will be made after the basic functionality state is reached.
+
 # Getting started
 
 ### Executing the application
