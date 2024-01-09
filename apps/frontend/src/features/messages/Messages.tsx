@@ -1,4 +1,5 @@
 import { Card } from "primereact/card";
+import { MessageBox } from "./MessageBox";
 
 const style = {
     width: '70%',
@@ -36,7 +37,9 @@ const Messages = () => {
     return (
         <div style={style}>
             <Card style={headerStyle}></Card>
-            <Card style={messagesStyle}></Card>
+            <Card style={messagesStyle}>
+                <MessageBox />
+            </Card>
             <Card style={messageInputBoxStyle}>
                 <input 
                     style={messageTextBoxStyle} 
