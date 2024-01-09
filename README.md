@@ -1,5 +1,9 @@
-# <img src="./assets/whatsapp-icon.png" width="40"> Sonozap
-Sonozap is a generic clone of WhatsApp web built on top of React, GraphQL and PostgreSQL focused on providing contacts management, real-time messaging and other awesome features. The project works with [Relay](https://relay.dev/) and [Mercurius](https://github.com/mercurius-js/mercurius) as both client and server providers for GraphQL and [Drizzle](https://orm.drizzle.team/) as relational ORM to handle data persistance with PGSQL. 
+# <img src="./assets/whatsapp-icon.png" width="30"> Sonozap
+Sonozap is a fully-featured Whatsapp clone with real-time messaging, contacts management and authentication built on top of React and Relay. The project works with [Relay](https://relay.dev/) and [Mercurius](https://github.com/mercurius-js/mercurius) as both client and server providers for GraphQL and [Drizzle](https://orm.drizzle.team/) as relational ORM to handle data persistance with PGSQL. 
+
+> [!IMPORTANT]
+> 
+> This repository is still on **development** phase and may not contain all the listed features. Releases will be made after the basic functionality state is reached.
 
 # Getting started
 
@@ -13,7 +17,7 @@ Sonozap is a generic clone of WhatsApp web built on top of React, GraphQL and Po
     - [Relay VSCode extension](https://marketplace.visualstudio.com/items?itemName=meta.relay) (optional)
     - [GraphQL VSCode extension](https://marketplace.visualstudio.com/items?itemName=GraphQL.vscode-graphql) (optional)
 
-- A `.env` file in the project root is necessary in order to execute it. You can rename the pre-existing file `.env.example` file to `.env` and execute directly without problems.
+- A `.env` file in the project root is necessary in order to execute it. You can rename the pre-existing file `.env.example`.
 - After meeting all the requirements, run the command:
     ```
     npx turbo run dev
@@ -63,3 +67,11 @@ In the backend application each folder in the features folder is representing a 
 The overall structure diagram provides an easy-to-understand view of the current applications running in this project, the objective is to understand, visually, how the parts are connected and the meaning behind the workflow processes.
 
 <img src="./assets/overall-diagram.png">
+
+### Feature workflows
+
+1. Real-time messaging
+
+The messaging feature consists on providing an interface to perform real-time messaging to a contact through subscriptions (Relay useSubscription hook connected to a websocket graphql connection defined on Mercurius). The current focus is to provide a IndexedDB in frontend to store the messages while keeping it synchronized with the backend through subscriptions, accessing the database when a message event is emitted.
+
+<img src="./assets/messaging-feature-diagram.png">
