@@ -37,7 +37,8 @@ The development arrangement selected for this project was monorepo and to achiev
 
 # Architecture
 
-> Note: This project is in constant evolution and the architecture section may be updated based on changes that may happen to the code, this includes: feature additions or deletions, schema changes, database changes and others.
+> [!TIP]
+> This project is in constant evolution and the architecture section may be updated based on changes that may happen to the code, this includes: feature additions or deletions, schema changes, database changes and others.
 
 When written, this project's architecture was developed to provide a very simple CRUD-application with an integrated real-time feature, but at the same time be easily expandable. Between the selected design patterns for that project, one of the most important ones was **folder by feature**, that implementation provided a clear path to where the logic should be located and what is needed to finish each isolated feature without having impact (or at least having low impact) in other features, avoiding that a single problem inside a component can cause an application entire breakdown.
 
