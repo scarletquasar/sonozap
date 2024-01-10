@@ -9,10 +9,11 @@ import { eq } from "drizzle-orm";
 // 1. Create pending message
 // A pending message will be created in the backend with a
 // 'sender' and a 'receiver'.
-// 2. Get pending message
+// 2. Check for pending messages (websocket)
+// 3. Get pending message
 // The message content will be fetched by the client with the
 // correct permissions to be saved locally.
-// 3. Deliver pending message
+// 4. Deliver pending message
 // The client will send a signal after properly storing the
 // message, then, the backend will know that is OK to delete
 // the pending message object from the database.
