@@ -1,4 +1,4 @@
-import { varchar, json, pgTable, uuid } from "drizzle-orm/pg-core";
+import { varchar, json, pgTable, uuid, date, boolean } from "drizzle-orm/pg-core";
 
 export const profileTable = pgTable('profiles', {
     uuid: uuid('uuid').primaryKey(),
@@ -8,4 +8,12 @@ export const profileTable = pgTable('profiles', {
     photo: varchar('photo'),
     password: varchar('password'),
     contacts: json('contacts')
+});
+
+export const pendingMessageTable = pgTable('pendingMessages', {
+    uuid: uuid('uuid').primaryKey(),
+    sentAt: date('sentAt'),
+    senderId: uuid('senderId'),
+    receiverId: uuid('receiverId'),
+    content: varchar('content', { length: 1024 })
 });

@@ -40,4 +40,11 @@ const validateAndParseJwt = async (token: string, isRefreshToken = false) => {
     return validPayload;
 };
 
-export { createJwt, validateAndParseJwt }
+const checkJwtOwnership = async (token: string, profileId: string) => {
+    const { uuid } = await validateAndParseJwt(token, false) as { uuid: string };
+    if (uuid != profileId) {
+        throw new Error('The caller profile does not match the current token ownership');
+    }
+}
+
+export { createJwt, validateAndParseJwt, checkJwtOwnership }
