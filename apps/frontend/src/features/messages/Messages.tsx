@@ -38,7 +38,8 @@ const Messages = () => {
         <div style={style}>
             <Card style={headerStyle}></Card>
             <Card style={messagesStyle}>
-                <MessageBox />
+                <MessageBox sender={true} />
+                <MessageBox sender={false} />
             </Card>
             <Card style={messageInputBoxStyle}>
                 <input 

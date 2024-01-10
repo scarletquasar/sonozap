@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "dev": "npx turbo run dev"
   },
   "keywords": [],
   "author": "",
