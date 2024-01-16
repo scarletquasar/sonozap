@@ -5,28 +5,28 @@ import { ContactsProfileTitle } from "./ContactsProfileTitle";
 import { ContactsProfileBody } from "./ContactsProfileBody";
 import { ContactsSearch } from "./ContactsSearch";
 import { ContactsList } from "./ContactsList";
+import { defaultTheme } from "../../themes";
 
 const style = {
     width: '30%',
-    borderRight: '0.4px solid rgba(255,255,255, 0.2)',
+    borderRight: defaultTheme.colors.divisory,
     margin: '0'
 }
 
 const headerStyle = {
-    height: '6.3%',
+    height: defaultTheme.shapes.headerHeight,
     borderRadius: 0,
     display: 'flex',
     alignItems: 'center',
-    paddingInline: '3%',
-    width: '100%',
-    background: '#202C33',
-    fontSize: 'calc(1dvw + 1dvh)',
+    paddingInline: defaultTheme.shapes.headderPaddingInline,
+    background: defaultTheme.colors.primary,
+    fontSize: defaultTheme.font.normalSize,
 } as React.CSSProperties;
 
 const searchStyle = {
     height: '5.5%',
     borderRadius: 0,
-    background: '#111B21',
+    background: defaultTheme.colors.secondary,
     display: 'flex',
     paddingBlock: '1.5%',
     paddingInline: '2.5%'
@@ -34,16 +34,16 @@ const searchStyle = {
 
 const contactsStyle = {
     height: '88.7%',
-    background: '#111B21',
+    background:  defaultTheme.colors.secondary,
     overflowY: 'auto'
 } as React.CSSProperties;
 
 const profileHeaderStyle = {
-    height: '6.3%',
+    height: defaultTheme.shapes.headerHeight,
     borderRadius: 0,
     display: 'flex',
     width: '100%',
-    background: '#202C33',
+    background:  defaultTheme.colors.primary,
     alignItems: 'center',
     flexDirection: 'row',
     gap: '5%',
@@ -53,7 +53,7 @@ const profileHeaderStyle = {
 const profileBodyStyle = {
     height: '87.4%',
     width: '100%',
-    background: '#111B21',
+    background:  defaultTheme.colors.primary,
     borderRadius: 0,
     display: 'flex',
     alignItems: 'center',

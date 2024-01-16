@@ -3,8 +3,8 @@ import { ContactsContext } from "./ContactsPresets";
 
 const profilePicStyle = {
     borderRadius: '100%',
-    height: '70%',
-    width: '18%',
+    height: '1.5em',
+    aspectRatio: '1 / 1',
     border: 'none',
     cursor: 'pointer'
 } as React.CSSProperties;
