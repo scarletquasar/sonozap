@@ -1,3 +1,10 @@
 type ViewStatus = 'sent' | 'received' | 'read';
 
-export { type ViewStatus }
+type Message = {
+    receiver: string,
+    sender: string,
+    content: string,
+    sentAt: Date
+}
+
+export type { ViewStatus, Message }

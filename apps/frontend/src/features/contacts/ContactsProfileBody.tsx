@@ -84,6 +84,7 @@ function ContactsProfileBody(props: { style: React.CSSProperties }) {
         const uuid = localStorage.getItem('uuid');
         const token = localStorage.getItem('token');
         const reference = loadQuery(environment, ContactsProfileBodyQuery, { uuid, token });
+        
         setQueryReference(reference);
     }, []);
 

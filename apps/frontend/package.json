@@ -31,7 +31,8 @@
     "react-router": "^6.21.1",
     "react-router-dom": "^6.21.1",
     "react-toastify": "^9.1.3",
-    "relay-runtime": "^16.1.0"
+    "relay-runtime": "^16.1.0",
+    "usehooks-ts": "^2.9.4"
   },
   "devDependencies": {
     "@types/isomorphic-fetch": "^0.0.39",
