@@ -4,14 +4,13 @@ const messageBoxStyle = {
 }
 
 const messageItemStyle = {
-    padding: '0.5em',
-    background: 'gray'
+    padding: '0.5em'
 }
 
 const MessageBox = (props: { sender: boolean }) => {
     return (
         <div style={{...messageBoxStyle, flexDirection: props.sender ? 'row-reverse' : 'row' }}>
-            <div style={messageItemStyle}>
+            <div style={{...messageItemStyle, background: props.sender ? '#005C4B' : '#202C33' }}>
                 Message
             </div>
             

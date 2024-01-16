@@ -33,6 +33,10 @@ const messageTextBoxStyle = {
     padding: '1em',
 }
 
+const synchronizeMessages = () => {
+    const store = indexedDB.open('stored-messages');
+};
+
 const Messages = () => {
     return (
         <div style={style}>

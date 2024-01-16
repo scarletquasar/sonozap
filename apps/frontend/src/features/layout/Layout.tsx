@@ -6,18 +6,14 @@ import { ToastContainer } from 'react-toastify';
 
 type SetAuthenticationInfoFunction = (info: { 
   token: string, 
-  refreshToken: string, 
-  tokenExpiration: string, 
-  refreshTokenExpiration: string
+  tokenExpiration: string
 }) => void;
 
 const Layout = () => {
   const [profile, setProfile] = useState<ProfileContextState['contextValue']>();
   const [authenticationInfo, setAuthenticationInfo] = useState({
     token: localStorage.getItem('token'),
-    refreshToken: localStorage.getItem('refresh-token'),
-    tokenExpiration: localStorage.getItem('token-expiration'),
-    refreshTokenExpiration: localStorage.getItem('refresh-token-expiration')
+    tokenExpiration: localStorage.getItem('token-expiration')
   });
 
   return (

@@ -22,14 +22,15 @@ type Contact {
 }
 
 type AccessTokens {
-    refreshToken: String
     token: String
-    refreshTokenExpiration: String
     tokenExpiration: String
 }
 
 type Query {
     getProfileWithContacts(uuid: String, token: String): Profile
-    createProfile(profile: ProfileInput, token: String): Profile
     authenticate(number: String, password: String): AccessTokens
+}
+
+type Mutation {
+    createProfile(profile: ProfileInput, token: String): Profile
 }

@@ -15,7 +15,7 @@ const getResolvers = (db: Database) => ({
         createProfile: async (_: unknown, 
             { profile, password, token }: 
             { profile: Profile, password: string, token: string }) => createProfile(profile, token, password, db),
-        ...getMessagingResolvers(db)
+        // ...getMessagingResolvers(db)
     }
 });
 

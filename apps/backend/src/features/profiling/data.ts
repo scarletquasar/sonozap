@@ -4,7 +4,7 @@ import { z } from 'zod';
 import { and, eq } from "drizzle-orm";
 import { createJwt, validateAndParseJwt } from "./authentication.js";
 import { profileTable } from "../database/schema.js";
-import { Database } from "../database/types.js";
+import type { Database } from "../database/types.js";
 import { randomUUID } from "crypto";
 
 type ProfileWithContacts = Profile & { contacts?: Profile[] }
@@ -85,9 +85,9 @@ const authenticate = async (number: string, password: string, db: Database) => {
     }
 
     const profile = await getProfileWithContacts(match[0].uuid, null, db, false, true);
-    const tokens = await createJwt(profile);
+    const token = await createJwt(profile);
 
-    return tokens;
+    return token;
 }
 
 export { 
