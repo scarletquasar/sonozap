@@ -41,25 +41,56 @@ const createPendingMessage = async (
     return uuid;
 }
 
-const deliverPendingMessage = async (messageId: string, token: string, db: Database) => {
-    const match = (await db
-        .select({ 
-            uuid: pendingMessageTable.uuid,
-            receiverId: pendingMessageTable.receiverId
-        })
-        .from(pendingMessageTable)
-        .where(eq(pendingMessageTable.uuid, messageId))
-        .limit(1))[0];
-
-    const { uuid: currentCallerId } = await validateAndParseJwt(token) as { uuid: string };
-    const isCorrectReceiver = match.receiverId === currentCallerId;
+const checkForPendingMessages = async (token: string, db: Database) => {
+    const { uuid } = await validateAndParseJwt(token) as { uuid: string }; 
     
+    const messages = await db
+        .select({})
+        .from(pendingMessageTable)
+        .where(eq(pendingMessageTable.receiverId, uuid));
 
-    if (isCorrectReceiver) {
-        await db
-            .delete(pendingMessageTable)
-            .where(eq(pendingMessageTable.uuid, messageId))
-    }
+    return messages.length > 0;
 }
 
-export { createPendingMessage }
+const getPendingMessages = async (token: string, db: Database) => {
+    const { uuid } = await validateAndParseJwt(token) as { uuid: string }; 
+    
+    const messages = await db
+        .select()
+        .from(pendingMessageTable)
+        .where(eq(pendingMessageTable.receiverId, uuid));
+
+    return messages;
+}
+
+const deliverPendingMessages = async (messageIds: string[], token: string, db: Database) => {
+    for (const messageId of messageIds) {
+        const match = (await db
+            .select({ 
+                uuid: pendingMessageTable.uuid,
+                receiverId: pendingMessageTable.receiverId
+            })
+            .from(pendingMessageTable)
+            .where(eq(pendingMessageTable.uuid, messageId))
+            .limit(1))[0];
+    
+        const { uuid: currentCallerId } = await validateAndParseJwt(token) as { uuid: string };
+        const isCorrectReceiver = match.receiverId === currentCallerId;
+        
+    
+        if (isCorrectReceiver) {
+            await db
+                .delete(pendingMessageTable)
+                .where(eq(pendingMessageTable.uuid, messageId))
+        }
+    }
+
+    return true;
+}
+
+export { 
+    createPendingMessage,
+    checkForPendingMessages,
+    getPendingMessages, 
+    deliverPendingMessages  
+}

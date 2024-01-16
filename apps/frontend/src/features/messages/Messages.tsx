@@ -8,7 +8,7 @@ import { config } from  '../../config';
 import { ProfileContext } from "../profiling/ProfileContext";
 
 const style = {
-    width: '70%',
+    width: '70%'
 }
 
 const headerStyle = {
@@ -20,7 +20,8 @@ const messagesStyle = {
     height: '87%',
     borderRadius: '0',
     background: 'none',
-    scroll: 'auto'
+    scroll: 'auto',
+    overflowY: 'auto'
 }
 
 const messageInputBoxStyle = {
@@ -56,10 +57,15 @@ const Messages = () => {
         const hasNewMessages = true;
 
         if (hasNewMessages) {
-            const newMessages = [] as Message[];
+            const newMessages = [{
+                sentAt: new Date(),
+                content: 'test',
+                sender: Math.round(Math.random()).toString()
+            }] as Message[];
             setMessages([...messages, ...newMessages]);
         }
 
+        console.log(messages);
     }, config.checkForNewMessagesDelay); 
 
     return (
@@ -67,12 +73,14 @@ const Messages = () => {
             <Card style={headerStyle}></Card>
             <Card style={messagesStyle}>
                 {messages.map(msg => {
-                    const isSender = msg.sender === profileCtxValue.uuid;
+                    // const isSender = msg.sender === profileCtxValue.uuid;
+                    const isSender = msg.sender === '1';
                     return (
-                        <MessageBox 
+                        <MessageBox
+                            key={msg.content + msg.sentAt.getTime()}
                             sender={isSender}
                             content={msg.content}
-                            sentAt={date} />
+                            sentAt={msg.sentAt} />
                     )
                 })}
             </Card>

@@ -21,6 +21,19 @@ type Contact {
     profile: Profile
 }
 
+type Message {
+    uuid: String
+    sentAt: String
+    receiverId: String
+    content: String
+}
+
+type MessageInput {
+    senderId: String
+    receiverId: String
+    content: String
+}
+
 type AccessTokens {
     token: String
     tokenExpiration: String
@@ -33,4 +46,8 @@ type Query {
 
 type Mutation {
     createProfile(profile: ProfileInput, token: String): Profile
+    createPendingMessage(input: MessageInput, token: String): String
+    checkForPendingMessages(token: String): Boolean
+    getPendingMessages(token: String): [Message]
+    deliverPendingMessages(messageIds: [String], token: String): Boolean
 }
