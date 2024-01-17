@@ -62,7 +62,9 @@ const Messages = () => {
         });
 
         observable.toPromise().then((response: GraphQLResponseWithData) => {
-            if (!response.errors) {
+            const hasIncomingMessages = !!response.data?.getPendingMessages?.length;
+
+            if (!response.errors && hasIncomingMessages) {
                 const newMessages = response.data.getPendingMessages as Message[];
                 const identifier = messagingCtxValue.currentMessageContactId + '-stored-messages';
                 localStorage.setItem(identifier, JSON.stringify([...messages, ...newMessages]));
