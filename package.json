@@ -4,7 +4,8 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "dev": "npx turbo run dev"
+    "dev": "npx turbo run dev",
+    "relay": "cd apps/frontend && pnpm relay && cd ../.."
   },
   "keywords": [],
   "author": "",
