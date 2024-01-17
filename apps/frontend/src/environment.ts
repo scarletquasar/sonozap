@@ -6,7 +6,7 @@ function createEnvironment() {
     const store = new Store(new RecordSource());
     return new Environment({ store, network });
 }
-  
+
 const environment = createEnvironment();
 
 export { environment }
