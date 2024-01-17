@@ -23,6 +23,13 @@ Sonozap is a fully-featured Whatsapp clone with real-time messaging, contacts ma
     npx turbo run dev
     ```
 
+- All the applications will be executed, including the PostgreSQL database and the pgadmin container through a docker-compose file. By default, the applications will be available in:
+    - Frontend: http://localhost:5173
+    - Backend: http://localhost:4000
+    - PostgreSQL: http://localhost:5432
+    - pgadmin: http://localhost:5050/
+
+
 ### Executing the migrations
 
 Currently, the migration process is being executed manually, this will change in the future. For now, there is need to access the self-hosted docker pgadmin instance (http://localhost:5050/browser/) and manually create the tables. The global schema can be accessed [here](./apps/backend/src/features/database/schema.ts).
