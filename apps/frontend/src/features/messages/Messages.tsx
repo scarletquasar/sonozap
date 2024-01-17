@@ -6,10 +6,11 @@ import { Message } from "./MessagesPresets";
 import { MessagingContext } from "./MessagingContext";
 import { config } from  '../../config';
 import { ProfileContext } from "../profiling/ProfileContext";
-import { GraphQLResponseWithData } from "relay-runtime";
+import { GraphQLResponseWithData, graphql } from "relay-runtime";
 import { fetchFunction } from "../fetching/fetchFunction";
 import { MessagesInputBox } from "./MessagesInputBox";
 import { defaultTheme } from "../../themes";
+import { useMutation } from "react-relay";
 
 const style = {
     width: '70%'
@@ -40,9 +41,16 @@ const MessagesQuery = `
     }
 `;
 
+const MessagesMutation = graphql`
+    mutation MessagesMutation($messageIds: [String]) {
+        deliverPendingMessages(messageIds: $messageIds)
+    }
+`;
+
 const Messages = () => {
     const { contextValue: messagingCtxValue } = useContext(MessagingContext);
     const { contextValue: profileCtxValue } = useContext(ProfileContext);
+    const [commitMutation] = useMutation(MessagesMutation);
 
     const [messages, setMessages] = useState<Message[]>([]);
 
@@ -70,6 +78,12 @@ const Messages = () => {
                 localStorage.setItem(identifier, JSON.stringify([...messages, ...newMessages]));
                 setMessages([...messages, ...newMessages]);
 
+                commitMutation({
+                    variables: {
+                        messageIds: newMessages.map(message => message.uuid)
+                    }
+                });
+                
                 return;
             }
 
