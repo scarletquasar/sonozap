@@ -41,17 +41,6 @@ const createPendingMessage = async (
     return uuid;
 }
 
-const checkForPendingMessages = async (token: string, db: Database) => {
-    const { uuid } = await validateAndParseJwt(token) as { uuid: string }; 
-    
-    const messages = await db
-        .select({})
-        .from(pendingMessageTable)
-        .where(eq(pendingMessageTable.receiverId, uuid));
-
-    return messages.length > 0;
-}
-
 const getPendingMessages = async (token: string, db: Database) => {
     const { uuid } = await validateAndParseJwt(token) as { uuid: string }; 
     
@@ -90,7 +79,6 @@ const deliverPendingMessages = async (messageIds: string[], token: string, db: D
 
 export { 
     createPendingMessage,
-    checkForPendingMessages,
     getPendingMessages, 
     deliverPendingMessages  
 }

@@ -8,7 +8,7 @@ const contactCardNormalStyle = {
 };
 
 const contactCardHoverStyle = {
-    background: defaultTheme.primaryColor
+    background: defaultTheme.colors.primary
 }
 
 const contactCardLeftStyle = {

@@ -1,22 +1,23 @@
 import { Database } from "../database/types.js"
-import { checkForPendingMessages, createPendingMessage, deliverPendingMessages, getPendingMessages } from "./data.js"
+import { createPendingMessage, deliverPendingMessages, getPendingMessages } from "./data.js"
 import { CreatePendingMessageOptions } from "./types.js";
 
-const getMessagingResolvers = (db: Database) => {
-    const createPendingMessageResolver = async (
-        _: unknown,
-        { data, token }: { data: CreatePendingMessageOptions, token: string }
-    ) => await createPendingMessage(data, token, db);
-
-    const checkForPendingMessagesResolver = async (
-        _: unknown,
-        { token }: { token: string }
-    ) => await checkForPendingMessages(token, db);
-
+const getMessagingQueryResolvers = (db: Database) => {
     const getPendingMessagesResolver = async (
         _: unknown,
         { token }: { token: string }
     ) => await getPendingMessages(token, db);
+
+    return {
+        getPendingMessages: getPendingMessagesResolver
+    }
+}
+
+const getMessagingMutationResolvers = (db: Database) => {
+    const createPendingMessageResolver = async (
+        _: unknown,
+        { data, token }: { data: CreatePendingMessageOptions, token: string }
+    ) => await createPendingMessage(data, token, db);
 
     const deliverPendingMessagesResolver = async (
         _: unknown,
@@ -25,10 +26,8 @@ const getMessagingResolvers = (db: Database) => {
 
     return {
         createPendingMessage: createPendingMessageResolver,
-        checkForPendingMessages: checkForPendingMessagesResolver,
-        getPendingMessages: getPendingMessagesResolver,
         deliverPendingMessages: deliverPendingMessagesResolver
     }
 }
 
-export { getMessagingResolvers }
+export { getMessagingQueryResolvers, getMessagingMutationResolvers }

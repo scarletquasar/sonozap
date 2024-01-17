@@ -11,7 +11,9 @@ const defaultTheme = {
         smallSize: 'calc(0.55dvw + 0.55dvh)'
     },
     shapes: {
-        headerHeight: '2em',
+        messageViewerHeight: '86%',
+        messageBoxHeight: '8%',
+        headerHeight: '6%',
         headderPaddingInline: '0.5em'
     }
 } as const;

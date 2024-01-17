@@ -23,7 +23,14 @@ const Layout = () => {
         username: profile?.username ?? '',
         number: profile?.number ?? '',
         bio: profile?.bio ?? '',
-        contacts: profile?.contacts ?? []
+        // TODO: CHANGE TO FETCH CONTACTS
+        contacts: [{
+          uuid: '1',
+          username: 'test',
+          bio: 'test',
+          number: 'test',
+          photo: undefined
+      }]
       },
       setContextValue: setProfile as ProfileContextState['setContextValue']
     }}>

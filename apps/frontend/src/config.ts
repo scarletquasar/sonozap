@@ -1,5 +1,5 @@
 const config = {
-    checkForNewMessagesDelay: 3000
+    checkForNewMessagesDelay: 15000
 } as const;
 
 export { config }

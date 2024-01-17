@@ -6,39 +6,39 @@ import { Message } from "./MessagesPresets";
 import { MessagingContext } from "./MessagingContext";
 import { config } from  '../../config';
 import { ProfileContext } from "../profiling/ProfileContext";
+import { GraphQLResponseWithData } from "relay-runtime";
+import { fetchFunction } from "../fetching/fetchFunction";
+import { MessagesInputBox } from "./MessagesInputBox";
+import { defaultTheme } from "../../themes";
 
 const style = {
     width: '70%'
 }
 
 const headerStyle = {
-    height: '6.3%',
+    height: defaultTheme.shapes.headerHeight,
     borderRadius: 0
 }
 
 const messagesStyle = {
-    height: '87%',
+    height: defaultTheme.shapes.messageViewerHeight,
     borderRadius: '0',
     background: 'none',
     scroll: 'auto',
     overflowY: 'auto'
-}
+} as React.CSSProperties;
 
-const messageInputBoxStyle = {
-    height: '6.7%',
-    borderRadius: 0,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
-}
-
-const messageTextBoxStyle = {
-    width: '50vw',
-    height: '100%',
-    borderRadius: '1em',
-    border: 'none',
-    padding: '1em',
-}
+const MessagesQuery = `
+    query MessagesQuery($token: String) {
+        getPendingMessages(token: $token) {
+            uuid
+            sentAt
+            receiverId
+            senderId
+            content
+        }
+    }
+`;
 
 const Messages = () => {
     const { contextValue: messagingCtxValue } = useContext(MessagingContext);
@@ -54,18 +54,25 @@ const Messages = () => {
     }, [messagingCtxValue.currentMessageContactId]);
 
     useInterval(() => {
-        const hasNewMessages = true;
+        const observable = fetchFunction({ 
+            text: MessagesQuery 
+        },
+        { 
+            token: localStorage.getItem('token')! 
+        });
 
-        if (hasNewMessages) {
-            const newMessages = [{
-                sentAt: new Date(),
-                content: 'test',
-                sender: Math.round(Math.random()).toString()
-            }] as Message[];
-            setMessages([...messages, ...newMessages]);
-        }
+        observable.toPromise().then((response: GraphQLResponseWithData) => {
+            if (!response.errors) {
+                const newMessages = response.data.getPendingMessages as Message[];
+                const identifier = messagingCtxValue.currentMessageContactId + '-stored-messages';
+                localStorage.setItem(identifier, JSON.stringify([...messages, ...newMessages]));
+                setMessages([...messages, ...newMessages]);
 
-        console.log(messages);
+                return;
+            }
+
+            console.error('Error retrieving messages');
+        });
     }, config.checkForNewMessagesDelay); 
 
     return (
@@ -73,8 +80,8 @@ const Messages = () => {
             <Card style={headerStyle}></Card>
             <Card style={messagesStyle}>
                 {messages.map(msg => {
-                    // const isSender = msg.sender === profileCtxValue.uuid;
-                    const isSender = msg.sender === '1';
+                    const isSender = msg.sender === profileCtxValue.uuid;
+
                     return (
                         <MessageBox
                             key={msg.content + msg.sentAt.getTime()}
@@ -84,12 +91,8 @@ const Messages = () => {
                     )
                 })}
             </Card>
-            <Card style={messageInputBoxStyle}>
-                <input 
-                    style={messageTextBoxStyle} 
-                    type="text"
-                    placeholder="Type a message..." />
-            </Card>
+            <MessagesInputBox />
+
         </div>
     )
 };

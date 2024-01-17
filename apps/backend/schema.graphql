@@ -25,10 +25,11 @@ type Message {
     uuid: String
     sentAt: String
     receiverId: String
+    senderId: String
     content: String
 }
 
-type MessageInput {
+input MessageInput {
     senderId: String
     receiverId: String
     content: String
@@ -42,12 +43,11 @@ type AccessTokens {
 type Query {
     getProfileWithContacts(uuid: String, token: String): Profile
     authenticate(number: String, password: String): AccessTokens
+    getPendingMessages(token: String): [Message]
 }
 
 type Mutation {
     createProfile(profile: ProfileInput, token: String): Profile
     createPendingMessage(input: MessageInput, token: String): String
-    checkForPendingMessages(token: String): Boolean
-    getPendingMessages(token: String): [Message]
     deliverPendingMessages(messageIds: [String], token: String): Boolean
 }

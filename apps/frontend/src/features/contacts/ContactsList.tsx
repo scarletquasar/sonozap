@@ -8,8 +8,10 @@ const getContactComponents = (contacts: ProfileContextState['contextValue']['con
             intro: 'Hello world',
             viewStatus: 'read' as const,
             date: new Date()
-        }; //Todo: Fetch last message metadata
-        return <ContactCard data={contact} lastMessageMetadata={lastMessageMetadata} />
+        };
+        return <ContactCard 
+            data={contact} 
+            lastMessageMetadata={lastMessageMetadata} />
     })
 };
 
