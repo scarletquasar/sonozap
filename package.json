@@ -5,7 +5,9 @@
   "main": "index.js",
   "scripts": {
     "dev": "npx turbo run dev",
-    "relay": "cd apps/frontend && pnpm relay && cd ../.."
+    "relay": "cd apps/frontend && pnpm relay && cd ../..",
+    "prettier": "npx prettier --write .",
+    "lint": "npx eslint ./ --fix"
   },
   "keywords": [],
   "author": "",
@@ -14,5 +16,18 @@
     "dotenv-cli": "^7.3.0",
     "ts-node": "^10.9.2",
     "zod": "^3.22.4"
+  },
+  "devDependencies": {
+    "husky": "^8.0.3",
+    "prettier": "^3.2.3",
+    "pretty-quick": "^3.2.1",
+    "eslint-config-airbnb-base": "^14.2.1",
+    "eslint-config-prettier": "^7.0.0",
+    "eslint-plugin-import": "^2.22.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npx pretty-quick --staged && npx eslint ./ --fix"
+    }
   }
 }

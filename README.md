@@ -23,6 +23,13 @@ Sonozap is a fully-featured Whatsapp clone with real-time messaging, contacts ma
     npx turbo run dev
     ```
 
+- All the applications will be executed, including the PostgreSQL database and the pgadmin container through a docker-compose file. By default, the applications will be available in:
+    - Frontend: http://localhost:5173
+    - Backend: http://localhost:4000
+    - PostgreSQL: http://localhost:5432
+    - pgadmin: http://localhost:5050/
+
+
 ### Executing the migrations
 
 Currently, the migration process is being executed manually, this will change in the future. For now, there is need to access the self-hosted docker pgadmin instance (http://localhost:5050/browser/) and manually create the tables. The global schema can be accessed [here](./apps/backend/src/features/database/schema.ts).
@@ -37,7 +44,8 @@ The development arrangement selected for this project was monorepo and to achiev
 
 # Architecture
 
-> Note: This project is in constant evolution and the architecture section may be updated based on changes that may happen to the code, this includes: feature additions or deletions, schema changes, database changes and others.
+> [!TIP]
+> This project is in constant evolution and the architecture section may be updated based on changes that may happen to the code, this includes: feature additions or deletions, schema changes, database changes and others.
 
 When written, this project's architecture was developed to provide a very simple CRUD-application with an integrated real-time feature, but at the same time be easily expandable. Between the selected design patterns for that project, one of the most important ones was **folder by feature**, that implementation provided a clear path to where the logic should be located and what is needed to finish each isolated feature without having impact (or at least having low impact) in other features, avoiding that a single problem inside a component can cause an application entire breakdown.
 
