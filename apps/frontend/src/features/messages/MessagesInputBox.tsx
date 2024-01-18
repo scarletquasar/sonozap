@@ -4,6 +4,7 @@ import { graphql } from "relay-runtime"
 import { useMutation } from "react-relay"
 import { useContext, useState } from "react"
 import { ProfileContext } from "../profiling/ProfileContext"
+import { toast } from "react-toastify"
 
 const messageInputBoxStyle = {
     height: defaultTheme.shapes.messageBoxHeight,
@@ -21,8 +22,8 @@ const messageTextBoxStyle = {
 }
 
 const MessagesInputBoxMutation = graphql`
-    mutation MessagesInputBoxMutation($input: MessageInput) {
-        createPendingMessage(input: $input)
+    mutation MessagesInputBoxMutation($input: MessageInput, $token: String) {
+        createPendingMessage(input: $input, token: $token)
     }
 `;
 
@@ -41,11 +42,29 @@ const MessagesInputBox = () => {
             onChange={(e) => setMessage(e.target.value)}
             onKeyDown={(e) => {
                 if (e.key === 'Enter') {
+                    console.log(contextValue.uuid);
                     commitMutation({
                         variables: {
-                            content: message,
-                            receiverId: '',
-                            senderId: contextValue.uuid
+                            input: {
+                                content: message,
+                                receiverId: '',
+                                senderId: contextValue.uuid
+                            },
+                            token: localStorage.getItem('token')
+                        },
+                        onCompleted: (response, errors) => {
+                            errors?.forEach(error => {
+                                toast.error('Can not send message: ' + error.message, {
+                                    position: "top-right",
+                                    autoClose: 5000,
+                                    hideProgressBar: false,
+                                    closeOnClick: true,
+                                    pauseOnHover: true,
+                                    draggable: true,
+                                    progress: undefined,
+                                    theme: "dark",
+                                });
+                            });
                         }
                     });
                 }

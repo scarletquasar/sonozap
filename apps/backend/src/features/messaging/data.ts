@@ -19,23 +19,23 @@ import { eq } from "drizzle-orm";
 // the pending message object from the database.
 
 const createPendingMessage = async (
-    options: CreatePendingMessageOptions,
+    input: CreatePendingMessageOptions,
     token: string,
     db: Database
 ) => {
     const sentAt = new Date().toISOString();
     const uuid = randomUUID();
 
-    await checkJwtOwnership(token, options.senderId);
+    await checkJwtOwnership(token, input.senderId);
 
     await db
         .insert(pendingMessageTable)
         .values({
             uuid,
             sentAt,
-            senderId: options.senderId,
-            receiverId: options.receiverId,
-            content: options.content
+            senderId: input.senderId,
+            receiverId: input.receiverId,
+            content: input.content
         });
 
     return uuid;

@@ -16,8 +16,8 @@ const getMessagingQueryResolvers = (db: Database) => {
 const getMessagingMutationResolvers = (db: Database) => {
     const createPendingMessageResolver = async (
         _: unknown,
-        { data, token }: { data: CreatePendingMessageOptions, token: string }
-    ) => await createPendingMessage(data, token, db);
+        { input, token }: { input: CreatePendingMessageOptions, token: string }
+    ) => await createPendingMessage(input, token, db);
 
     const deliverPendingMessagesResolver = async (
         _: unknown,
