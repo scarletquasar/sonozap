@@ -2,9 +2,10 @@ import { Card } from "primereact/card"
 import { defaultTheme } from "../../themes"
 import { graphql } from "relay-runtime"
 import { useMutation } from "react-relay"
-import { useContext, useState } from "react"
+import { SetStateAction, useContext, useState } from "react"
 import { ProfileContext } from "../profiling/ProfileContext"
 import { toast } from "react-toastify"
+import { Message } from "./MessagesPresets"
 
 const messageInputBoxStyle = {
     height: defaultTheme.shapes.messageBoxHeight,
@@ -27,7 +28,11 @@ const MessagesInputBoxMutation = graphql`
     }
 `;
 
-const MessagesInputBox = () => {
+type MessagesInputBoxProps  = {
+    setMessages: (value: SetStateAction<Message[]>) => void
+};
+
+const MessagesInputBox = (props: MessagesInputBoxProps) => {
     const [commitMutation] = useMutation(MessagesInputBoxMutation);
     const { contextValue } = useContext(ProfileContext);
     const [message, setMessage] = useState('');
@@ -43,16 +48,19 @@ const MessagesInputBox = () => {
             onKeyDown={(e) => {
                 if (e.key === 'Enter') {
                     console.log(contextValue.uuid);
+
+                    const messageData = {
+                        content: message,
+                        receiverId: '',
+                        senderId: contextValue.uuid
+                    };
+
                     commitMutation({
                         variables: {
-                            input: {
-                                content: message,
-                                receiverId: '',
-                                senderId: contextValue.uuid
-                            },
+                            input: messageData,
                             token: localStorage.getItem('token')
                         },
-                        onCompleted: (response, errors) => {
+                        onCompleted: (_, errors) => {
                             errors?.forEach(error => {
                                 toast.error('Can not send message: ' + error.message, {
                                     position: "top-right",
@@ -65,6 +73,19 @@ const MessagesInputBox = () => {
                                     theme: "dark",
                                 });
                             });
+
+                            if (!errors) {
+                                setMessage('');
+                                props.setMessages(current => {
+                                    return [...current, {
+                                        sentAt: new Date(),
+                                        uuid: '',
+                                        receiver: messageData.receiverId,
+                                        sender: messageData.senderId,
+                                        content: messageData.content
+                                    }]
+                                })
+                            }
                         }
                     });
                 }

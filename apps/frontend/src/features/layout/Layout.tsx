@@ -19,7 +19,7 @@ const Layout = () => {
   return (
     <ProfileContext.Provider value={{
       contextValue: {
-        uuid: profile?.uuid ?? '',
+        uuid: localStorage.getItem('uuid') ?? '',
         username: profile?.username ?? '',
         number: profile?.number ?? '',
         bio: profile?.bio ?? '',

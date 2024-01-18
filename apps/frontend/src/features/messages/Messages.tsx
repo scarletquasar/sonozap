@@ -107,7 +107,7 @@ const Messages = () => {
                     )
                 })}
             </Card>
-            <MessagesInputBox />
+            <MessagesInputBox setMessages={setMessages}/>
 
         </div>
     )
