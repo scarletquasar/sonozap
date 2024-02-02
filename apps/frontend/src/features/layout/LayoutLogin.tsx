@@ -6,16 +6,14 @@ import { fetchFunction } from "../fetching/fetchFunction";
 import { SetAuthenticationInfoFunction } from "./Layout";
 import { Fieldset } from 'primereact/fieldset';
 import { toast } from 'react-toastify';
-import { ProfileContext } from "../profiling/ProfileContext";
 import { decodeJwt } from "../fetching/jwt";
+import { ProfileContext } from "../profiling/ProfileContext";
 
 const LayoutLoginQuery = `
     query LayoutLoginQuery($number: String!, $password: String!) {
         authenticate(number: $number, password: $password) {
             token
-            refreshToken
             tokenExpiration
-            refreshTokenExpiration
         }
     }
 `;
@@ -23,6 +21,8 @@ const LayoutLoginQuery = `
 const LayoutLogin = (props: { setInfoMethod: SetAuthenticationInfoFunction }) => {
     const [number, setNumber] = useState<string>('');
     const [password, setPassword] = useState<string>('');
+
+    const { contextValue, setContextValue } = useContext(ProfileContext);
 
     return (
         <Fieldset className="layout-login-fieldset">
@@ -69,30 +69,19 @@ const LayoutLogin = (props: { setInfoMethod: SetAuthenticationInfoFunction }) =>
 
                         const { 
                             token, 
-                            refreshToken, 
-                            tokenExpiration, 
-                            refreshTokenExpiration 
+                            tokenExpiration,
                         } = response.data.authenticate;
 
                         localStorage.setItem('token', token);
-                        localStorage.setItem('refresh-token', refreshToken);
                         localStorage.setItem('token-expiration', tokenExpiration);
-                        localStorage.setItem('refresh-token-expiration', refreshTokenExpiration);
-
+                        
                         const tokenPayload = decodeJwt(token);
-
                         localStorage.setItem('uuid', tokenPayload.uuid);
-                        localStorage.setItem('username', tokenPayload.username);
-                        localStorage.setItem('bio', tokenPayload.bio);
-                        localStorage.setItem('number', tokenPayload.number);
-                        localStorage.setItem('photo', tokenPayload.photo ?? '');
-                        localStorage.setItem('contacts', JSON.stringify(tokenPayload.contacts));
+                        setContextValue({ ...contextValue, uuid: tokenPayload.uuid });
 
                         props.setInfoMethod({ 
                             token, 
-                            refreshToken, 
-                            tokenExpiration, 
-                            refreshTokenExpiration 
+                            tokenExpiration
                         });
 
                         toast.dismiss();

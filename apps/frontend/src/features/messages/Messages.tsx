@@ -1,51 +1,126 @@
 import { Card } from "primereact/card";
 import { MessageBox } from "./MessageBox";
+import { useContext, useEffect, useState } from "react";
+import { useInterval } from 'usehooks-ts';
+import { Message } from "./MessagesPresets";
+import { MessagingContext } from "./MessagingContext";
+import { config } from  '../../config';
+import { ProfileContext } from "../profiling/ProfileContext";
+import { GraphQLResponseWithData, graphql } from "relay-runtime";
+import { fetchFunction } from "../fetching/fetchFunction";
+import { MessagesInputBox } from "./MessagesInputBox";
+import { defaultTheme } from "../../themes";
+import { useMutation } from "react-relay";
 
 const style = {
-    width: '70%',
+    width: '70%'
 }
 
 const headerStyle = {
-    height: '6.3%',
+    height: defaultTheme.shapes.headerHeight,
     borderRadius: 0
 }
 
 const messagesStyle = {
-    height: '87%',
+    height: defaultTheme.shapes.messageViewerHeight,
     borderRadius: '0',
     background: 'none',
-    scroll: 'auto'
-}
+    scroll: 'auto',
+    overflowY: 'auto'
+} as React.CSSProperties;
 
-const messageInputBoxStyle = {
-    height: '6.7%',
-    borderRadius: 0,
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center'
-}
+const MessagesQuery = `
+    query MessagesQuery($token: String) {
+        getPendingMessages(token: $token) {
+            uuid
+            sentAt
+            receiverId
+            senderId
+            content
+        }
+    }
+`;
 
-const messageTextBoxStyle = {
-    width: '50vw',
-    height: '100%',
-    borderRadius: '1em',
-    border: 'none',
-    padding: '1em',
-}
+const MessagesMutation = graphql`
+    mutation MessagesMutation($messageIds: [String]) {
+        deliverPendingMessages(messageIds: $messageIds)
+    }
+`;
 
 const Messages = () => {
+    const { contextValue: messagingCtxValue } = useContext(MessagingContext);
+    const { contextValue: profileCtxValue } = useContext(ProfileContext);
+    const [commitMutation] = useMutation(MessagesMutation);
+
+    const [messages, setMessages] = useState<Message[]>([]);
+
+    useEffect(() => {
+        const identifier = messagingCtxValue.currentMessageContactId + '-stored-messages';
+        const contentString = localStorage.getItem(identifier) ?? '[]';
+        const localMessages = JSON.parse(contentString) as Message[];
+        setMessages(localMessages);
+    }, [messagingCtxValue.currentMessageContactId]);
+
+    useInterval(() => {
+        const observable = fetchFunction({ 
+            text: MessagesQuery 
+        },
+        { 
+            token: localStorage.getItem('token')! 
+        });
+
+        observable.toPromise().then((response: GraphQLResponseWithData) => {
+            const hasIncomingMessages = !!response.data?.getPendingMessages?.length;
+
+            if (!response.errors && hasIncomingMessages) {
+                const newMessages = response.data.getPendingMessages as Message[];
+                const identifier = messagingCtxValue.currentMessageContactId + '-stored-messages';
+                
+                // Map messages to inject delivery information
+                const mappedMessages = newMessages.map(msg => ({
+                    ...msg,
+                    delivered: false
+                }));
+
+                localStorage.setItem(
+                    identifier, 
+                    JSON.stringify([...messages, ...mappedMessages]));
+
+                setMessages([...messages, ...mappedMessages]);
+
+                // Actually triggers the messages delivery
+                commitMutation({
+                    variables: {
+                        messageIds: newMessages.map(message => message.uuid)
+                    }
+                });
+                
+                return;
+            }
+
+            console.error('Error retrieving messages');
+        });
+    }, config.checkForNewMessagesDelay); 
+
     return (
         <div style={style}>
             <Card style={headerStyle}></Card>
             <Card style={messagesStyle}>
-                <MessageBox />
+                {messages.map(msg => {
+                    const isSender = msg.sender === profileCtxValue.uuid;
+
+                    return (
+                        <MessageBox
+                            key={msg.content + msg.sentAt.getTime()}
+                            sender={isSender}
+                            content={msg.content}
+                            sentAt={msg.sentAt}
+                            delivered={msg.delivered} />
+                    )
+                })}
             </Card>
-            <Card style={messageInputBoxStyle}>
-                <input 
-                    style={messageTextBoxStyle} 
-                    type="text"
-                    placeholder="Type a message..." />
-            </Card>
+            <MessagesInputBox setMessages={setMessages}/>
+
         </div>
     )
 };

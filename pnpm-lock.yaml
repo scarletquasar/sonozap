@@ -118,9 +118,15 @@ importers:
       react-toastify:
         specifier: ^9.1.3
         version: 9.1.3(react-dom@18.2.0)(react@18.2.0)
+      relay-commit-mutation-promise:
+        specifier: ^1.2.0
+        version: 1.2.0(relay-runtime@16.1.0)
       relay-runtime:
         specifier: ^16.1.0
         version: 16.1.0
+      usehooks-ts:
+        specifier: ^2.9.4
+        version: 2.9.4(react-dom@18.2.0)(react@18.2.0)
     devDependencies:
       '@types/isomorphic-fetch':
         specifier: ^0.0.39
@@ -5082,6 +5088,14 @@ packages:
     engines: {node: '>=8'}
     dev: true
 
+  /relay-commit-mutation-promise@1.2.0(relay-runtime@16.1.0):
+    resolution: {integrity: sha512-op4IbmQUGpwuHQ3IhycTQK1DfcW06+VNZNou/vAcydS2nco22PiROVF2CbWPHasf22w+z84eTqG/4ryLhyVrSw==}
+    peerDependencies:
+      relay-runtime: '>1.0.0'
+    dependencies:
+      relay-runtime: 16.1.0
+    dev: false
+
   /relay-compiler@16.1.0:
     resolution: {integrity: sha512-ZceB9u0Zx5/6VJwRViaGwZEUsEY/wqdbxPs7AD2/udZYabRae5az97MU9XZ3p4zIeZhR+y9y2+KLdXuoECeLvA==}
     hasBin: true
@@ -5808,6 +5822,17 @@ packages:
     resolution: {integrity: sha512-7rKUyy33Q1yc98pQ1DAmLtwX109F7TIfWlW1Ydo8Wl1ii1SeHieeh0HHfPeL2fMXK6z0s8ecKs9frCuLJvndBg==}
     dependencies:
       punycode: 2.3.1
+
+  /usehooks-ts@2.9.4(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-VOSEbA+BGGORLttsICowNb5CG0D2/IEoVvMEl9OuuOoQi99W6XuNipo3SPFhWo3Bhdwi0Swj1D+IMQDQB9KrwQ==}
+    engines: {node: '>=16.15.0'}
+    peerDependencies:
+      react: ^16.8.0  || ^17.0.0 || ^18.0.0
+      react-dom: ^16.8.0  || ^17.0.0 || ^18.0.0
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
+    dev: false
 
   /util-deprecate@1.0.2:
     resolution: {integrity: sha512-EPD5q1uXyFxJpCrLnCc1nHnq3gOa6DZBocAIiI2TaSCA7VCJ1UJDMagCzIkXNsUYfD1daK//LTEQ8xiIbrHtcw==}

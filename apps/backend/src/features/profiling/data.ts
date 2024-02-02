@@ -4,8 +4,9 @@ import { z } from 'zod';
 import { and, eq } from "drizzle-orm";
 import { createJwt, validateAndParseJwt } from "./authentication.js";
 import { profileTable } from "../database/schema.js";
+import type { Database } from "../database/types.js";
+import { randomUUID } from "crypto";
 
-type Database = PostgresJsDatabase<Record<string, any>>;
 type ProfileWithContacts = Profile & { contacts?: Profile[] }
 
 const getProfileWithContacts = async (
@@ -38,6 +39,7 @@ const getProfileWithContacts = async (
 }
 
 const createProfile = async (profile: Profile, password: string, token: string, db: Database) => {
+    profile.uuid = randomUUID();
     const validProfile = await Profile.parseAsync(profile);
     const insertionProfile = {...validProfile, contacts: validProfile.contacts };
 
@@ -83,9 +85,9 @@ const authenticate = async (number: string, password: string, db: Database) => {
     }
 
     const profile = await getProfileWithContacts(match[0].uuid, null, db, false, true);
-    const tokens = await createJwt(profile);
+    const token = await createJwt(profile);
 
-    return tokens;
+    return token;
 }
 
 export { 

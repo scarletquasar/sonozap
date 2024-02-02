@@ -1,13 +1,14 @@
 import { useState } from "react";
 import { ViewStatus } from "../messages/MessagesPresets";
 import { ProfileContextState } from "../profiling/ProfileContext"
+import { defaultTheme } from "../../themes";
 
 const contactCardNormalStyle = {
     background: 'none'
 };
 
 const contactCardHoverStyle = {
-    background: '#202C33'
+    background: defaultTheme.colors.primary
 }
 
 const contactCardLeftStyle = {

@@ -1,11 +1,9 @@
 import { Profile } from "./presets.js";
 import { Jwt } from "jwt-destroy"
-import { z } from "zod"
 
 const createJwt = async (profile: Profile) => {
     const handler = new Jwt(process.env.JWT_SECRET);
-    const token = await handler.generate(profile, '72h');
-    const refreshToken = await handler.generate({ profileId: profile.uuid }, '144h');
+    const token = await handler.generate({ uuid: profile.uuid }, '72h');
 
     const tokenExpiration = new Date();
     tokenExpiration.setHours(tokenExpiration.getHours() + 72);
@@ -15,29 +13,29 @@ const createJwt = async (profile: Profile) => {
 
     return { 
         token: token.toKen as string, 
-        refreshToken: refreshToken.toKen as string,
-        tokenExpiration: tokenExpiration.toISOString(),
-        refreshTokenExpiration: refreshTokenExpiration.toISOString()
+        tokenExpiration: tokenExpiration.toISOString()
     }
 }
 
 const validateAndParseJwt = async (token: string, isRefreshToken = false) => {
     const handler = new Jwt(process.env.JWT_SECRET);
-    const result: { status: string, data?: Record<string, unknown> } = await handler.decode(token);
+    const result: { 
+        status: string, 
+        data?: Record<string, unknown> 
+    } = await handler.decode(token);
 
-    if (result.status === 'Invalid') {
+    if (result.status.toUpperCase() === 'INVALID') {
         throw new Error('Invalid JWT token');
     }
 
-    if (isRefreshToken) {
-        const payloadFormat = z.object({ profileId: z.string().uuid() });
-        const validPayload = await payloadFormat.parseAsync(result.data);
-
-        return validPayload;
-    }
-
-    const validPayload = await Profile.parseAsync(result.data.data);
-    return validPayload;
+    return result.data.data;
 };
 
-export { createJwt, validateAndParseJwt }
+const checkJwtOwnership = async (token: string, profileId: string) => {
+    const { uuid } = await validateAndParseJwt(token, false) as { uuid: string };
+    if (uuid != profileId) {
+        throw new Error('The caller profile does not match the current token ownership');
+    }
+}
+
+export { createJwt, validateAndParseJwt, checkJwtOwnership }

@@ -1,3 +1,12 @@
 type ViewStatus = 'sent' | 'received' | 'read';
 
-export { type ViewStatus }
+type Message = {
+    uuid: string,
+    receiver: string,
+    sender: string,
+    content: string,
+    sentAt: Date,
+    delivered: boolean
+}
+
+export type { ViewStatus, Message }

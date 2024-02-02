@@ -21,15 +21,33 @@ type Contact {
     profile: Profile
 }
 
+type Message {
+    uuid: String
+    sentAt: String
+    receiverId: String
+    senderId: String
+    content: String
+}
+
+input MessageInput {
+    senderId: String
+    receiverId: String
+    content: String
+}
+
 type AccessTokens {
-    refreshToken: String
     token: String
-    refreshTokenExpiration: String
     tokenExpiration: String
 }
 
 type Query {
     getProfileWithContacts(uuid: String, token: String): Profile
-    createProfile(profile: ProfileInput, token: String): Profile
     authenticate(number: String, password: String): AccessTokens
+    getPendingMessages(token: String): [Message]
+}
+
+type Mutation {
+    createProfile(profile: ProfileInput, token: String): Profile
+    createPendingMessage(input: MessageInput, token: String): String
+    deliverPendingMessages(messageIds: [String], token: String): Boolean
 }
