@@ -5,7 +5,8 @@ type Message = {
     receiver: string,
     sender: string,
     content: string,
-    sentAt: Date
+    sentAt: Date,
+    delivered: boolean
 }
 
 export type { ViewStatus, Message }

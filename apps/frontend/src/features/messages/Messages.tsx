@@ -75,9 +75,20 @@ const Messages = () => {
             if (!response.errors && hasIncomingMessages) {
                 const newMessages = response.data.getPendingMessages as Message[];
                 const identifier = messagingCtxValue.currentMessageContactId + '-stored-messages';
-                localStorage.setItem(identifier, JSON.stringify([...messages, ...newMessages]));
-                setMessages([...messages, ...newMessages]);
+                
+                // Map messages to inject delivery information
+                const mappedMessages = newMessages.map(msg => ({
+                    ...msg,
+                    delivered: false
+                }));
 
+                localStorage.setItem(
+                    identifier, 
+                    JSON.stringify([...messages, ...mappedMessages]));
+
+                setMessages([...messages, ...mappedMessages]);
+
+                // Actually triggers the messages delivery
                 commitMutation({
                     variables: {
                         messageIds: newMessages.map(message => message.uuid)
@@ -103,7 +114,8 @@ const Messages = () => {
                             key={msg.content + msg.sentAt.getTime()}
                             sender={isSender}
                             content={msg.content}
-                            sentAt={msg.sentAt} />
+                            sentAt={msg.sentAt}
+                            delivered={msg.delivered} />
                     )
                 })}
             </Card>

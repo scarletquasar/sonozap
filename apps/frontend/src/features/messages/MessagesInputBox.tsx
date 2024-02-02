@@ -55,6 +55,20 @@ const MessagesInputBox = (props: MessagesInputBoxProps) => {
                         senderId: contextValue.uuid
                     };
 
+                    const localId = JSON.stringify(messageData); 
+
+                    // Shows the message as undelivered
+                    props.setMessages(current => {
+                        return [...current, {
+                            sentAt: new Date(),
+                            uuid: localId,
+                            receiver: messageData.receiverId,
+                            sender: messageData.senderId,
+                            content: messageData.content,
+                            delivered: false
+                        }]
+                    });
+
                     commitMutation({
                         variables: {
                             input: messageData,
@@ -76,14 +90,19 @@ const MessagesInputBox = (props: MessagesInputBoxProps) => {
 
                             if (!errors) {
                                 setMessage('');
+
+                                // Actually updates the send message to delivered
                                 props.setMessages(current => {
-                                    return [...current, {
-                                        sentAt: new Date(),
-                                        uuid: '',
-                                        receiver: messageData.receiverId,
-                                        sender: messageData.senderId,
-                                        content: messageData.content
-                                    }]
+                                    return current.map(message => {
+                                        if (message.uuid == localId) {
+                                            return {
+                                                ...message,
+                                                delivered: true
+                                            }
+                                        }
+
+                                        return message
+                                    })
                                 })
                             }
                         }
