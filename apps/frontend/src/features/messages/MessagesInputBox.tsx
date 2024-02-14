@@ -1,8 +1,8 @@
 import { Card } from "primereact/card"
 import { defaultTheme } from "../../themes"
-import { graphql } from "relay-runtime"
-import { useMutation } from "react-relay"
-import { SetStateAction, createRef, useContext, useState } from "react"
+import { Disposable, MutationParameters, graphql } from "relay-runtime"
+import { UseMutationConfig, useMutation } from "react-relay"
+import { Dispatch, SetStateAction, createRef, useContext, useState } from "react"
 import { ProfileContext } from "../profiling/ProfileContext"
 import { toast } from "react-toastify"
 import { Message } from "./MessagesPresets"
@@ -31,6 +31,71 @@ const MessagesInputBoxMutation = graphql`
 type MessagesInputBoxProps  = {
     setMessages: (value: SetStateAction<Message[]>) => void
 };
+
+type MessageData = {
+    content: string;
+    receiverId: string;
+    senderId: string;
+}
+
+const sendMessageCommit = (
+    input: MessageData, 
+    localId: string,
+    setMessage: Dispatch<SetStateAction<string>>,
+    setMessages: MessagesInputBoxProps['setMessages'],
+    commitMutation: (config: UseMutationConfig<MutationParameters>) => Disposable) => {
+        commitMutation({
+            variables: {
+                input,
+                token: localStorage.getItem('token')
+            },
+            onCompleted: (_, errors) => {
+                setMessage('');
+
+                errors?.forEach(error => {
+                    toast.error('Can not send message: ' + error.message, {
+                        position: "top-right",
+                        autoClose: 5000,
+                        hideProgressBar: false,
+                        closeOnClick: true,
+                        pauseOnHover: true,
+                        draggable: true,
+                        progress: undefined,
+                        theme: "dark",
+                    });
+                });
+
+                if (!errors) {
+                    // Actually updates the send message to delivered
+                    setMessages(current => {
+                        return current.map(message => {
+                            if (message.uuid == localId) {
+                                return {
+                                    ...message,
+                                    delivered: true
+                                }
+                            }
+
+                            return message
+                        })
+                    });
+
+                    return;
+                }
+
+                // Removes the problematic message
+                setMessages(current => {
+                    return current.filter(message => {
+                        if (message.uuid == localId) {
+                            return false;
+                        }
+
+                        return true;
+                    })
+                });
+            }
+        });
+}
 
 const MessagesInputBox = (props: MessagesInputBoxProps) => {
     const [commitMutation] = useMutation(MessagesInputBoxMutation);
@@ -71,57 +136,13 @@ const MessagesInputBox = (props: MessagesInputBoxProps) => {
                         }]
                     });
 
-                    commitMutation({
-                        variables: {
-                            input: messageData,
-                            token: localStorage.getItem('token')
-                        },
-                        onCompleted: (_, errors) => {
-                            setMessage('');
-
-                            errors?.forEach(error => {
-                                toast.error('Can not send message: ' + error.message, {
-                                    position: "top-right",
-                                    autoClose: 5000,
-                                    hideProgressBar: false,
-                                    closeOnClick: true,
-                                    pauseOnHover: true,
-                                    draggable: true,
-                                    progress: undefined,
-                                    theme: "dark",
-                                });
-                            });
-
-                            if (!errors) {
-                                // Actually updates the send message to delivered
-                                props.setMessages(current => {
-                                    return current.map(message => {
-                                        if (message.uuid == localId) {
-                                            return {
-                                                ...message,
-                                                delivered: true
-                                            }
-                                        }
-
-                                        return message
-                                    })
-                                });
-
-                                return;
-                            }
-
-                            // Removes the problematic message
-                            props.setMessages(current => {
-                                return current.filter(message => {
-                                    if (message.uuid == localId) {
-                                        return false;
-                                    }
-
-                                    return true;
-                                })
-                            });
-                        }
-                    });
+                    sendMessageCommit(
+                        messageData, 
+                        localId,
+                        setMessage,
+                        props.setMessages, 
+                        commitMutation
+                    );
                 }
             }} />
         </Card>
