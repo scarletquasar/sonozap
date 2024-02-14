@@ -106,6 +106,19 @@ const Messages = () => {
         <div style={style}>
             <Card style={headerStyle}></Card>
             <Card style={messagesStyle}>
+            {/* Test message box \/ */}
+            <MessageBox
+                key={'TEST'}
+                sender={true}
+                content={'hello world'}
+                sentAt={new Date()}
+                delivered={true} />
+            <MessageBox
+                key={'TEST'}
+                sender={false}
+                content={'hello world'}
+                sentAt={new Date()}
+                delivered={true} />
                 {messages.map(msg => {
                     const isSender = msg.sender === profileCtxValue.uuid;
 

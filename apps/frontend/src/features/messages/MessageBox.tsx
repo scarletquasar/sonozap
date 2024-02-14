@@ -1,10 +1,25 @@
+import { defaultTheme } from "../../themes"
+
 const messageBoxStyle = {
     width: '100%',
     display: 'flex'
 }
 
 const messageItemStyle = {
-    padding: '0.5em'
+    paddingBlock: '0.8em',
+    paddingInline: '0.9em',
+    borderRadius: defaultTheme.shapes.messageItemBorderRadius
+}
+
+const messageItemTextStyle = {
+    fontSize: defaultTheme.font.smallSize,
+    fontFamily: defaultTheme.font.messageItemFamily
+}
+
+const messageItemDateStyle = {
+    color: defaultTheme.colors.secondaryText,
+    fontSize: defaultTheme.font.smallerSize,
+    fontFamily: defaultTheme.font.messageItemFamily
 }
 
 type MessageBoxProps = {
@@ -35,7 +50,13 @@ const MessageBox = (props: MessageBoxProps) => {
             <div style={{
                 ...messageItemStyle, 
                 background }}>
-                {props.content}
+                    <div style={messageItemTextStyle}>
+                        {props.content}
+                    </div>
+                    <div style={messageItemDateStyle}>
+                        {props.sentAt.toLocaleString()}
+                    </div>
+                 
             </div>
         </div>
     )
