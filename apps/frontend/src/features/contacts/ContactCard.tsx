@@ -21,13 +21,18 @@ const contactCardLeftStyle = {
 
 const contactCardRightStyle = {
     width: '88%',
-    borderBottom: '1px solid #2E3F49',
-    paddingBottom: '2%'
-};
+    height: '100%',
+    paddingBottom: '2%',
+    display: 'flex',
+    flexDirection: 'column',
+    justifyContent: 'center',
+    borderBottom: '1px solid #2E3F49'
+} as React.CSSProperties;
 
 const contactPhotoStyle = {
-    width: '100%',
-    borderRadius: '100%'
+    width: '95%',
+    borderRadius: '100%',
+    aspectRatio: '1 / 1'
 }
 
 const contactTitleStyle = {
@@ -36,7 +41,11 @@ const contactTitleStyle = {
 };
 
 const lastMessageStyle = {
-    fontSize: '0.9em'
+    fontSize: '0.9em',
+    display: 'flex',
+    alignItems: 'center',
+    gap: '1%',
+    color: defaultTheme.colors.secondaryText
 }
 
 const contactTitleLeftStyle = {
@@ -49,6 +58,41 @@ const contactTitleRightStyle = {
     flexDirection: 'row-reverse',
     fontSize: '0.75em',
 } as React.CSSProperties;
+
+const viewStatusStyle = {
+    marginTop: '30%',
+    fontSize: defaultTheme.font.smallSize,
+    display: 'flex',
+    color: defaultTheme.colors.secondaryText,
+    height: '100%',
+    alignItems: 'center'
+}
+
+const lastMessageItemStyle = {
+    display: 'flex',
+    placeItems: 'center',
+    padding: 0,
+    margin: 0,
+    height: '100%'
+}
+
+const viewStatus = {
+    'read': (
+        <div style={viewStatusStyle} className="material-symbols-outlined">
+            visibility
+        </div>
+    ),
+    'received': (
+        <div style={viewStatusStyle} className="material-symbols-outlined">
+            visibility_off
+        </div>
+    ),
+    'sent': (
+        <div style={viewStatusStyle} className="material-symbols-outlined">
+            hourglass_empty
+        </div>
+    )
+}
 
 const ContactCard = (props: { 
     data: ProfileContextState['contextValue']['contacts'][number],
@@ -82,7 +126,9 @@ const ContactCard = (props: {
     return (
         <div style={contactCardStyle} onMouseOver={cardMouseOver} onMouseLeave={cardMouseLeave}>
             <div style={contactCardLeftStyle}>
-                <img style={contactPhotoStyle} src={props.data.photo ?? './no-photo-placeholder.jpg'} />
+                <img 
+                    style={contactPhotoStyle} 
+                    src={props.data.photo ?? './no-photo-placeholder.jpg'} />
             </div>
             <div style={contactCardRightStyle}>
                 <div style={contactTitleStyle}>
@@ -94,8 +140,12 @@ const ContactCard = (props: {
                     </div>
                 </div>
                 <div style={lastMessageStyle}>
-                    {props.lastMessageMetadata.viewStatus}
-                    {props.lastMessageMetadata.intro}
+                    <div style={lastMessageItemStyle}>
+                        {viewStatus[props.lastMessageMetadata.viewStatus]}
+                    </div>
+                    <div style={lastMessageItemStyle}>
+                        {props.lastMessageMetadata.intro}
+                    </div>
                 </div>
             </div>
         </div>

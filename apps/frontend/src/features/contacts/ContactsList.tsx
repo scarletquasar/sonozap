@@ -4,14 +4,34 @@ import { ContactCard } from "./ContactCard";
 
 const getContactComponents = (contacts: ProfileContextState['contextValue']['contacts']) => {
     return contacts.map(contact => {
-        const lastMessageMetadata = {
-            intro: 'Hello world',
+        const lastMessageMetadata1 = {
+            intro: 'Hello world! (read message)',
             viewStatus: 'read' as const,
             date: new Date()
         };
-        return <ContactCard 
-            data={contact} 
-            lastMessageMetadata={lastMessageMetadata} />
+        const lastMessageMetadata2 = {
+            intro: 'Beautiful day. (sent message)',
+            viewStatus: 'sent' as const,
+            date: new Date()
+        };
+        const lastMessageMetadata3 = {
+            intro: 'I agree. (received message)',
+            viewStatus: 'received' as const,
+            date: new Date()
+        };
+        return (
+            <>
+                <ContactCard 
+                data={contact} 
+                lastMessageMetadata={lastMessageMetadata1} />
+                <ContactCard 
+                data={contact} 
+                lastMessageMetadata={lastMessageMetadata2} />
+                <ContactCard 
+                data={contact} 
+                lastMessageMetadata={lastMessageMetadata3} />
+            </>
+        )
     })
 };
 

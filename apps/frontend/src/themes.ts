@@ -17,7 +17,7 @@ const defaultTheme = {
         messageBoxHeight: '8%',
         messageItemBorderRadius: '0.85em',
         headerHeight: '6%',
-        headderPaddingInline: '0.5em'
+        headderPaddingInline: '0.5em',
     }
 } as const;
 
